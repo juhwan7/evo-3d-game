@@ -1,32 +1,23 @@
 {
   "schema_version": 1,
-  "handoff_id": "HANDOFF-2026-0002",
-  "cycle_id": "CYCLE-2026-0002",
-  "from_agent": "AI-A",
-  "to_agent": "AI-B",
-  "created_at": "2026-09-27T05:00:00+09:00",
+  "handoff_id": "HANDOFF-2026-0003",
+  "cycle_id": "CYCLE-2026-0003",
+  "from_agent": "AI-B",
+  "to_agent": "AI-C",
+  "created_at": "2026-09-27T05:20:00+09:00",
   "status": "OPEN",
-  "summary": "Deterministic debug/benchmark instrumentation added without expanding gameplay before AI-B critique.",
-  "changed": [
-    "seeded debug RNG via ?debug=1&seed=N",
-    "structured renderer/game debug snapshot",
-    "runtime smoke validates snapshot and draw calls"
-  ],
-  "failed": [
-    "One orchestration script had a syntax error before repository writes; retry succeeded in smaller steps."
-  ],
+  "summary": "Identity review complete: test Salvage Ecology before adding content volume.",
   "uncertainty": [
-    "Actual browser smoke is not yet executed",
-    "Gameplay identity critique remains pending"
+    "5–10 minute fun unverified",
+    "enemy-to-shard targeting cost unmeasured",
+    "browser smoke unexecuted",
+    "upgrade shuffle still uses Math.random()"
   ],
   "must_verify_next": [
-    "AI-B critiques the core loop and proposes a distinctive systemic hook",
-    "AI-C repeats same-seed smoke and compares metrics"
+    "same-seed runtime smoke",
+    "bounded enemy-to-shard search cost",
+    "low-cost mutation visual",
+    "P0/P1 regression check"
   ],
-  "do_not_change_casually": [
-    "main Stable",
-    "AI-B review gate before major gameplay expansion",
-    "append-only event history"
-  ],
-  "recommended_next_action": "AI-B completes TASK-2026-0001, then AI-C validates EXP-2026-0002."
+  "recommended_next_action": "AI-C validates QA instrumentation and performance budget, then hands bounded ecology prototype to AI-A."
 }

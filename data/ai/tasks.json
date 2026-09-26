@@ -2,7 +2,37 @@
   "schema_version": 1,
   "active_leases": [],
   "queue": [
-    {"task_id":"TASK-2026-0001","title":"Independent gameplay identity critique","owner":"AI-B","status":"READY","priority":"P3","depends_on":[],"success_condition":"A documented critique plus at least one testable distinctive systemic-hook hypothesis"},
-    {"task_id":"TASK-2026-0002","title":"Runtime and performance verification","owner":"AI-C","status":"BLOCKED_BY_HANDOFF","priority":"P2","depends_on":["TASK-2026-0001"],"success_condition":"Runtime risks and measurable performance evidence are recorded"}
+    {
+      "task_id": "TASK-2026-0001",
+      "title": "Independent gameplay identity critique",
+      "owner": "AI-B",
+      "status": "SUCCESS",
+      "priority": "P3",
+      "depends_on": [],
+      "success_condition": "Documented critique plus testable systemic hook",
+      "result": "Salvage Ecology selected"
+    },
+    {
+      "task_id": "TASK-2026-0002",
+      "title": "Runtime and performance verification",
+      "owner": "AI-C",
+      "status": "READY",
+      "priority": "P2",
+      "depends_on": [
+        "TASK-2026-0001"
+      ],
+      "success_condition": "Runtime risks and measurable performance evidence recorded"
+    },
+    {
+      "task_id": "TASK-2026-0003",
+      "title": "Salvage Ecology bounded prototype",
+      "owner": "AI-A",
+      "status": "BLOCKED_BY_HANDOFF",
+      "priority": "P3",
+      "depends_on": [
+        "TASK-2026-0002"
+      ],
+      "success_condition": "Contested shards and mutation create a rational leave/bait/harvest decision without unacceptable regression"
+    }
   ]
 }
