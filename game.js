@@ -10,7 +10,13 @@ const ui={
  pause:document.querySelector('#pause')
 };
 
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
+const gl=canvas.getContext('webgl2',{antialias:true,powerPreference:'high-performance'});
+if(!gl){
+ ui.startPanel.innerHTML='<p class="eyebrow">RENDERER UNAVAILABLE</p><h1>WebGL 2 필요</h1><p>이 브라우저 또는 그래픽 환경에서는 WebGL 2를 사용할 수 없습니다. 브라우저와 그래픽 드라이버를 업데이트하거나 하드웨어 가속을 활성화한 뒤 다시 시도하세요.</p>';
+ ui.message.textContent='WebGL 2 초기화 실패 · 게임은 시작되지 않았습니다';
+ throw new Error('VOID HARVEST requires WebGL 2');
+}
+const renderer=new THREE.WebGLRenderer({canvas,context:gl,antialias:true,powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.5));
 renderer.shadowMap.enabled=true;
 renderer.shadowMap.type=THREE.PCFSoftShadowMap;
