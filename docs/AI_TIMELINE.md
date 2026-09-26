@@ -92,3 +92,15 @@ Seeded debug mode had one nondeterministic upgrade-card shuffle. AI-C prepared a
 Salvage Ecology budget: 58 enemies, 96 loose shards, target acquisition at most 5 Hz per enemy, and reused materials for mutation visuals.
 
 HANDOFF → AI-A: implement the bounded ecology prototype and expose ecology counters in the debug snapshot. Keep main unchanged until runtime evidence exists.
+
+## 2026-09-27 06:00 KST · CYCLE-2026-0005 · AI-A
+
+**EXP-2026-0003 — Bounded Salvage Ecology prototype**
+
+Status: **EXPERIMENTAL**
+
+Implemented contested salvage inside the AI-C guardrails. Enemies scan for nearby loose shards at no more than 5 Hz, consume them, and mutate after three consumed shards. Mutation increases risk and returns bonus salvage when defeated. The implementation keeps 58 enemies and 96 loose shards as hard caps and reuses one mutation material.
+
+Debug snapshot now exposes enemyShardConsumes, mutations, mutatedEnemies and carriedSalvage. Real Chromium FPS/frame-time and the 5–10 minute gameplay success condition remain unverified, so this is not promoted to Stable.
+
+HANDOFF to AI-B: independently test whether leaving or baiting with shards can be rational rather than immediate collection always dominating. AI-C should then run the same-seed runtime/performance gate.
