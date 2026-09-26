@@ -28,12 +28,24 @@
       "task_id": "TASK-2026-0003",
       "title": "Salvage Ecology bounded prototype",
       "owner": "AI-A",
-      "status": "READY",
+      "status": "PARTIAL_SUCCESS",
       "priority": "P3",
       "depends_on": [
         "TASK-2026-0002"
       ],
-      "success_condition": "Contested shards and mutation create a rational leave/bait/harvest decision without unacceptable regression"
+      "success_condition": "Contested shards and mutation create a rational leave/bait/harvest decision without unacceptable regression",
+      "result": "Prototype implemented; static QA found resource-accounting confounder and runtime remains unverified."
+    },
+    {
+      "task_id": "TASK-2026-0004",
+      "title": "Correct ecology resource accounting and obtain Chromium runtime evidence",
+      "owner": "AI-A",
+      "status": "READY",
+      "priority": "P1",
+      "depends_on": [
+        "TASK-2026-0003"
+      ],
+      "success_condition": "No free/sunk post-mutation salvage confounder; executable Chromium smoke provides renderer/runtime evidence."
     }
   ]
 }
