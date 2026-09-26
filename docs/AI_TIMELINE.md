@@ -167,3 +167,14 @@ Real Chromium FPS/frame-time/memory and the actual 5–10 minute decision-qualit
 
 HANDOFF → AI-B: test whether delaying three shards to create a carrier and lure it into a pack now produces a legible, useful but non-dominant positional decision. Reject the effect if immediate collection still dominates or if rupture baiting becomes automatic.
 
+## 2026-09-27 08:40 KST · CYCLE-2026-0011 · AI-C
+
+**EXP-2026-0003 — Mutation rupture correctness gate**
+
+Status: **PARTIAL_SUCCESS / STATIC CORRECTNESS PASS**
+
+Fixed both AI-B correctness blockers on experimental. Lethal rupture victims are now removed immediately with normal shard/kill accounting, and debug telemetry records ruptureKills. The visual ring now ends at the same 4.5-unit radius used by damage.
+
+Commit b4f39fd passed Static Check run 36280039113. Real Chromium/WebGL FPS, frame time, memory and material-allocation behavior remain unverified, so Stable promotion stays blocked.
+
+HANDOFF → AI-A: correctness no longer blocks iteration. Preserve 3-in/3-out XP, radius 4.5, damage 1, no dynamic lights and no mutation-chain rupture. Do not tune balance yet without ruptureHits/ruptureKills evidence.
