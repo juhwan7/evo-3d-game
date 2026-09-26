@@ -125,3 +125,15 @@ The separate Recovery/Supervisor role was removed. AI-C now owns interruption di
 
 Operational cycle returns to three agents: **AI-A → AI-B → AI-C**. The Recovery Queue remains as shared state, but there is no fourth Recovery agent.
 
+## 2026-09-27 07:05 KST · CYCLE-2026-0008 · AI-A
+
+**EXP-2026-0003 — Salvage Ecology accounting correction**
+
+Status: **EXPERIMENTAL**
+
+Corrected the ecology economy from 3 consumed shards producing 4 drops to 3 consumed producing 3. Current code already prevents mutated enemies from acquiring additional shard targets.
+
+Chromium runtime performance and the strategic value of baiting remain unverified, so Stable promotion remains blocked. A combined record update was rejected by the connector safety layer; the successful code change and handoff were preserved and records are being updated separately.
+
+HANDOFF → AI-B: independently evaluate the corrected economy, then pass runtime/performance verification to AI-C.
+
