@@ -92,7 +92,7 @@ const ECOLOGY={maxLooseShards:96,scanInterval:.2,seekRadius:11,consumeRadius:.72
 
 let enemies=[],bullets=[],shards=[],ruptures=[];
 const keys=new Set();
-const debugMetrics={frames:0,elapsed:0,lastFps:0,maxEnemies:0,maxBullets:0,maxShards:0,enemyShardConsumes:0,mutations:0,mutationRuptures:0,ruptureEnemyHits:0};
+const debugMetrics={frames:0,elapsed:0,lastFps:0,maxEnemies:0,maxBullets:0,maxShards:0,enemyShardConsumes:0,mutations:0,mutationRuptures:0,ruptureEnemyHits:0,ruptureKills:0};
 const state={
  running:false,paused:false,gameOver:false,time:0,hp:100,maxHp:100,level:1,xp:0,nextXp:7,score:0,
  speed:8.4,fireRate:.48,fireTimer:0,damage:1,bulletSpeed:24,magnet:2.2,spawnTimer:0,spawnEvery:1.05,maxEnemies:58,
@@ -100,7 +100,7 @@ const state={
 };
 
 function reset(){
- if(debugMode){rngState=(Number(debugParams.get('seed'))||1337)>>>0;Object.assign(debugMetrics,{frames:0,elapsed:0,lastFps:0,maxEnemies:0,maxBullets:0,maxShards:0,enemyShardConsumes:0,mutations:0,mutationRuptures:0,ruptureEnemyHits:0});}
+ if(debugMode){rngState=(Number(debugParams.get('seed'))||1337)>>>0;Object.assign(debugMetrics,{frames:0,elapsed:0,lastFps:0,maxEnemies:0,maxBullets:0,maxShards:0,enemyShardConsumes:0,mutations:0,mutationRuptures:0,ruptureEnemyHits:0,ruptureKills:0});}
  enemies.forEach(x=>scene.remove(x.mesh));bullets.forEach(x=>scene.remove(x.mesh));shards.forEach(x=>scene.remove(x.mesh));ruptures.forEach(x=>scene.remove(x.mesh));
  enemies=[];bullets=[];shards=[];ruptures=[];Object.assign(state,{running:true,paused:false,gameOver:false,time:0,hp:100,maxHp:100,level:1,xp:0,nextXp:7,score:0,speed:8.4,fireRate:.48,fireTimer:0,damage:1,bulletSpeed:24,magnet:2.2,spawnTimer:0,spawnEvery:1.05,maxEnemies:58,kills:0,regen:0,pierce:0});
  player.position.set(0,0,0);ui.startPanel.classList.add('hidden');ui.gameoverPanel.classList.add('hidden');ui.upgradePanel.classList.add('hidden');ui.pause.classList.add('hidden');clock.getDelta();updateHud();
@@ -157,14 +157,22 @@ function acquireShardTarget(e){
 function triggerMutationRupture(pos,sourceEnemy){
  const radiusSq=ECOLOGY.ruptureRadius*ECOLOGY.ruptureRadius;
  let hits=0;
+ const killed=[];
  for(const other of enemies){
   if(other===sourceEnemy||other.mutated)continue;
-  if(other.mesh.position.distanceToSquared(pos)<=radiusSq){other.hp-=ECOLOGY.ruptureDamage;hits++;}
+  if(other.mesh.position.distanceToSquared(pos)<=radiusSq){
+   other.hp-=ECOLOGY.ruptureDamage;hits++;
+   if(other.hp<=0)killed.push(other);
+  }
+ }
+ for(const other of killed){
+  const idx=enemies.indexOf(other);if(idx<0)continue;
+  const dropPos=other.mesh.position.clone();scene.remove(other.mesh);enemies.splice(idx,1);dropShard(dropPos);state.kills++;
  }
  const mesh=new THREE.Mesh(ruptureGeo,ruptureMat.clone());
  mesh.rotation.x=-Math.PI/2;mesh.position.copy(pos);mesh.position.y=.08;scene.add(mesh);
  ruptures.push({mesh,life:ECOLOGY.ruptureLife,maxLife:ECOLOGY.ruptureLife});
- if(debugMode){debugMetrics.mutationRuptures++;debugMetrics.ruptureEnemyHits+=hits;}
+ if(debugMode){debugMetrics.mutationRuptures++;debugMetrics.ruptureEnemyHits+=hits;debugMetrics.ruptureKills+=killed.length;}
 }
 
 function gainXp(){
@@ -242,7 +250,7 @@ function update(dt){
  }
 
  for(let i=ruptures.length-1;i>=0;i--){
-  const r=ruptures[i];r.life-=dt;const progress=1-r.life/r.maxLife;r.mesh.scale.setScalar(1+progress*ECOLOGY.ruptureRadius);r.mesh.material.opacity=Math.max(0,.78*(1-progress));
+  const r=ruptures[i];r.life-=dt;const progress=Math.min(1,1-r.life/r.maxLife);r.mesh.scale.setScalar(1+progress*(ECOLOGY.ruptureRadius-1));r.mesh.material.opacity=Math.max(0,.78*(1-progress));
   if(r.life<=0){scene.remove(r.mesh);r.mesh.material.dispose();ruptures.splice(i,1);}
  }
 
@@ -287,4 +295,4 @@ document.querySelector('#start').addEventListener('click',reset);
 document.querySelector('#restart').addEventListener('click',reset);
 camera.position.set(0,15.5,18);camera.lookAt(0,0,-2);
 
-if(debugMode){window.__VOID_HARVEST_DEBUG__={get snapshot(){return {seed:(Number(debugParams.get('seed'))||1337)>>>0,rngState,time:state.time,hp:state.hp,level:state.level,score:state.score,enemies:enemies.length,bullets:bullets.length,shards:shards.length,ecology:{mutatedEnemies:enemies.filter(e=>e.mutated).length,carriedSalvage:enemies.reduce((sum,e)=>sum+e.salvage,0),enemyShardConsumes:debugMetrics.enemyShardConsumes,mutations:debugMetrics.mutations,mutationRuptures:debugMetrics.mutationRuptures,ruptureEnemyHits:debugMetrics.ruptureEnemyHits,activeRuptures:ruptures.length,maxLooseShards:ECOLOGY.maxLooseShards,scanHz:1/ECOLOGY.scanInterval,ruptureRadius:ECOLOGY.ruptureRadius,ruptureDamage:ECOLOGY.ruptureDamage},renderer:{calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures},metrics:{...debugMetrics}}}};ui.message.textContent='DEBUG MODE · seed '+((Number(debugParams.get('seed'))||1337)>>>0)+' · SALVAGE ECOLOGY';}
+if(debugMode){window.__VOID_HARVEST_DEBUG__={get snapshot(){return {seed:(Number(debugParams.get('seed'))||1337)>>>0,rngState,time:state.time,hp:state.hp,level:state.level,score:state.score,enemies:enemies.length,bullets:bullets.length,shards:shards.length,ecology:{mutatedEnemies:enemies.filter(e=>e.mutated).length,carriedSalvage:enemies.reduce((sum,e)=>sum+e.salvage,0),enemyShardConsumes:debugMetrics.enemyShardConsumes,mutations:debugMetrics.mutations,mutationRuptures:debugMetrics.mutationRuptures,ruptureEnemyHits:debugMetrics.ruptureEnemyHits,ruptureKills:debugMetrics.ruptureKills,activeRuptures:ruptures.length,maxLooseShards:ECOLOGY.maxLooseShards,scanHz:1/ECOLOGY.scanInterval,ruptureRadius:ECOLOGY.ruptureRadius,ruptureDamage:ECOLOGY.ruptureDamage},renderer:{calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures},metrics:{...debugMetrics}}}};ui.message.textContent='DEBUG MODE · seed '+((Number(debugParams.get('seed'))||1337)>>>0)+' · SALVAGE ECOLOGY';}
