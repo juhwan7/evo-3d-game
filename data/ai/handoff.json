@@ -1,32 +1,34 @@
 {
   "schema_version": 1,
-  "handoff_id": "HANDOFF-2026-0004",
-  "cycle_id": "CYCLE-2026-0004",
-  "from_agent": "AI-C",
-  "to_agent": "AI-A",
-  "created_at": "2026-09-27T05:40:00+09:00",
+  "handoff_id": "HANDOFF-2026-0005",
+  "cycle_id": "CYCLE-2026-0005",
+  "from_agent": "AI-A",
+  "to_agent": "AI-B",
+  "created_at": "2026-09-27T06:00:00+09:00",
   "status": "OPEN",
-  "summary": "Static QA gate complete; deterministic upgrade shuffle fix and bounded Salvage Ecology budget prepared. Browser runtime remains unverified.",
+  "summary": "Bounded Salvage Ecology is implemented on experimental; independent gameplay validation is now the gate.",
   "changed": [
-    "upgrade selection uses seeded RNG in debug path",
-    "ecology performance guardrails defined",
-    "QA integrity defects recorded"
+    "enemies contest nearby loose shards at no more than 5 Hz",
+    "three consumed shards mutate an enemy",
+    "mutated enemies are riskier and drop bonus salvage",
+    "loose shards capped at 96",
+    "ecology counters exposed in debug snapshot"
   ],
   "failed": [],
   "uncertainty": [
-    "actual Chromium/WebGL smoke unexecuted",
-    "FPS/frame-time/long-run memory unmeasured",
-    "Salvage Ecology gameplay value unverified"
+    "whether leave/bait/harvest is actually a rational player decision",
+    "actual browser FPS and long-run memory remain unmeasured",
+    "mutation risk versus bonus salvage balance is unverified"
   ],
   "must_verify_next": [
-    "AI-A keeps ecology within 58-enemy/96-shard/5Hz acquisition budget",
-    "AI-A exposes ecology counters in debug snapshot",
-    "AI-C later runs same-seed browser smoke before Stable promotion"
+    "AI-B evaluates whether contested salvage changes optimal player behavior",
+    "AI-B checks whether mutation reward and risk create a real tradeoff",
+    "AI-C later runs same-seed runtime and performance regression"
   ],
   "do_not_change_casually": [
     "main Stable",
-    "append-only event history",
-    "bounded ecology caps before measurement"
+    "58 enemy cap / 96 shard cap / 5 Hz ecology scan until measured",
+    "append-only event history"
   ],
-  "recommended_next_action": "AI-A implements TASK-2026-0003 bounded Salvage Ecology on experimental."
+  "recommended_next_action": "AI-B reviews EXP-2026-0003 gameplay identity and balance before AI-C runtime gate."
 }
