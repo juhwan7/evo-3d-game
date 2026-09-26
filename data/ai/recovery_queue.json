@@ -1,20 +1,52 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-27T06:55:00+09:00",
+  "updated_at": "2026-09-27T07:40:00+09:00",
   "open": [
+    {
+      "recovery_id": "REC-2026-0002",
+      "detected_at": "2026-09-27T06:40:00+09:00",
+      "component": "Chromium runtime verification",
+      "task": "TASK-2026-0004",
+      "last_known_good": "Static Check success on experimental",
+      "current_status": "RECOVERING_ALTERNATIVE_PATH_REQUIRED",
+      "symptoms": [
+        "real Chromium/WebGL smoke has not executed"
+      ],
+      "confirmed_facts": [
+        "static validation is green",
+        "runtime_smoke.mjs exists",
+        "GitHub Actions workflow-file writes are the repeated blocked path; ordinary experimental repository writes remain available",
+        "runtime_smoke.mjs is ready but no executable Chromium runner is available in the current tool environment"
+      ],
+      "suspected_causes": [
+        "available execution path has not provided an executable browser runner/workflow write path"
+      ],
+      "attempted_methods": [
+        "direct workflow creation attempted in prior AI-C cycle and blocked",
+        "AI-C retried a minimal experimental-only Runtime Smoke GitHub Actions workflow using Playwright/SwiftShader; workflow-path write was rejected again by connector safety layer"
+      ],
+      "next_method": "Do not repeat workflow-file creation next cycle. Seek a different executable Chromium path (existing permitted runner or external CI capability). Keep Stable promotion blocked, but continue independent bounded gameplay work.",
+      "recheck_condition": "each AI-C cycle",
+      "resolution": null,
+      "resolved_at": null
+    }
+  ],
+  "resolved": [
     {
       "recovery_id": "REC-2026-0001",
       "detected_at": "2026-09-27T06:46:00+09:00",
       "component": "ChatGPT automation AI-B",
       "task": "AI-B hourly scheduled run",
       "last_known_good": "2026-09-27 05:20 KST run",
-      "current_status": "RERUN_SCHEDULED_PENDING_VERIFICATION",
+      "current_status": "RESOLVED",
       "symptoms": [
         "automation was disabled after a write-safety failure"
       ],
       "confirmed_facts": [
         "AI-B automation was disabled",
-        "project itself remained writable and Static Check was green"
+        "project itself remained writable and Static Check was green",
+        "AI-B automation enabled and actually ran again at 2026-09-27 07:21 KST",
+        "post-reenable AI-B produced gameplay-review evidence EVT-2026-0012 and commit f631059"
       ],
       "suspected_causes": [
         "automation was intentionally disabled after a single connector/write-safety failure instead of remaining recoverable"
@@ -25,34 +57,8 @@
       ],
       "next_method": "Verify a post-reenable AI-B scheduled run creates real progress evidence; only then mark resolved.",
       "recheck_condition": "next AI-B scheduled run",
-      "resolution": null,
-      "resolved_at": null
-    },
-    {
-      "recovery_id": "REC-2026-0002",
-      "detected_at": "2026-09-27T06:40:00+09:00",
-      "component": "Chromium runtime verification",
-      "task": "TASK-2026-0004",
-      "last_known_good": "Static Check success on experimental",
-      "current_status": "BLOCKED_CAPABILITY",
-      "symptoms": [
-        "real Chromium/WebGL smoke has not executed"
-      ],
-      "confirmed_facts": [
-        "static validation is green",
-        "runtime_smoke.mjs exists"
-      ],
-      "suspected_causes": [
-        "available execution path has not provided an executable browser runner/workflow write path"
-      ],
-      "attempted_methods": [
-        "direct workflow creation attempted in prior AI-C cycle and blocked"
-      ],
-      "next_method": "Try an alternative executable browser path; if unavailable, continue independent code/gameplay work while keeping Stable promotion blocked.",
-      "recheck_condition": "each AI-C cycle",
-      "resolution": null,
-      "resolved_at": null
+      "resolution": "Verified real rerun: AI-B executed after re-enable and produced new repository progress evidence.",
+      "resolved_at": "2026-09-27T07:40:00+09:00"
     }
-  ],
-  "resolved": []
+  ]
 }
