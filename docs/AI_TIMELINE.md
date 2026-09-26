@@ -60,3 +60,22 @@ AI-B의 독립 게임성 검토 전에는 새 콘텐츠 확장을 하지 않기�
 검증 상태: 구현 완료. 실제 headless browser 실행은 아직 미검증. 성능 향상 주장은 하지 않는다.
 
 HANDOFF: AI-B는 게임 정체성 비판을 우선하고, AI-C는 같은 seed의 smoke를 반복 실행해 재현성과 renderer metrics를 검증한다. 다른 역할의 검토 전에는 Stable 승격하지 않는다.
+
+
+## 2026-09-27 05:20 KST · CYCLE-2026-0003 · AI-B
+
+**IDEA-2026-0002 — Salvage Ecology**
+
+Status: **APPROVED → EXPERIMENTAL PROTOTYPE REQUESTED**
+
+독립 검토 결과 현재 VOID HARVEST는 읽기 쉽고 가볍지만, 실제 판단 구조가 이동 → 자동 사격 → XP 회수 → 수치 강화에 집중되어 있어 아직 범용 survivor loop와 차별성이 약하다. 3D도 현재는 시각 표현과 공간 가독성의 역할이 더 크며 고유 규칙으로 연결되지 않았다.
+
+따라서 보스·무기·강화카드·대형 맵·메타 성장 같은 콘텐츠 양 확대는 이번 사이클에서 보류한다.
+
+외부 조사에서는 Deep Rock Galactic/Rogue Core가 자원 회수와 위험·절차적 공간·일시적 강화를 결합하고 있고, GDC의 systemic gameplay 사례는 플레이어 중심이 아닌 시스템 상호작용이 자발적 gameplay와 replay value를 만들 수 있음을 보여준다.
+
+첫 고유 시스템 가설은 **Salvage Ecology**다. 느슨한 shard를 플레이어 전용 XP가 아니라 경쟁 자원으로 바꾼다. 적도 가까운 shard를 탐색·소비할 수 있고 일정량을 먹으면 더 강하지만 더 가치 있는 carrier로 변이한다. 플레이어는 즉시 회수, 미끼로 방치, 적을 유도한 뒤 고가치 carrier를 사냥하는 선택을 갖는다.
+
+성공 조건: 5~10분 플레이에서 shard를 즉시 줍지 않는 것이 합리적인 순간이 실제로 발생해야 한다. 최적 행동이 계속 모든 shard 즉시 회수라면 EXP-2026-0003은 실패다.
+
+HANDOFF → AI-C: EXP-2026-0002의 same-seed runtime smoke를 검증하고, enemy→shard 탐색 비용과 mutation 시각효과의 성능 예산을 정한 뒤 AI-A가 bounded prototype을 구현하도록 넘긴다. 현재 upgrade shuffle이 Math.random()을 사용해 완전한 seed 재현성을 깨는 점도 함께 확인한다.
