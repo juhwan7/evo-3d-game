@@ -1,6 +1,11 @@
 import * as THREE from 'three';
 
 const canvas=document.querySelector('#game');
+const debugParams=new URLSearchParams(location.search);
+const debugMode=debugParams.get('debug')==='1';
+let rngState=(Number(debugParams.get('seed'))||1337)>>>0;
+function seededRandom(){rngState=(rngState+0x6D2B79F5)>>>0;let t=rngState;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;}
+function random(){return debugMode?seededRandom():Math.random();}
 const ui={
  hp:document.querySelector('#hp'),level:document.querySelector('#level'),score:document.querySelector('#score'),
  time:document.querySelector('#time'),fps:document.querySelector('#fps'),xp:document.querySelector('#xp-fill'),
@@ -83,6 +88,7 @@ const shardMat=new THREE.MeshStandardMaterial({color:0x89c8ff,emissive:0x225999,
 
 let enemies=[],bullets=[],shards=[];
 const keys=new Set();
+const debugMetrics={frames:0,elapsed:0,lastFps:0,maxEnemies:0,maxBullets:0,maxShards:0};
 const state={
  running:false,paused:false,gameOver:false,time:0,hp:100,maxHp:100,level:1,xp:0,nextXp:7,score:0,
  speed:8.4,fireRate:.48,fireTimer:0,damage:1,bulletSpeed:24,magnet:2.2,spawnTimer:0,spawnEvery:1.05,maxEnemies:58,
@@ -90,6 +96,7 @@ const state={
 };
 
 function reset(){
+ if(debugMode){rngState=(Number(debugParams.get('seed'))||1337)>>>0;Object.assign(debugMetrics,{frames:0,elapsed:0,lastFps:0,maxEnemies:0,maxBullets:0,maxShards:0});}
  enemies.forEach(x=>scene.remove(x.mesh));bullets.forEach(x=>scene.remove(x.mesh));shards.forEach(x=>scene.remove(x.mesh));
  enemies=[];bullets=[];shards=[];Object.assign(state,{running:true,paused:false,gameOver:false,time:0,hp:100,maxHp:100,level:1,xp:0,nextXp:7,score:0,speed:8.4,fireRate:.48,fireTimer:0,damage:1,bulletSpeed:24,magnet:2.2,spawnTimer:0,spawnEvery:1.05,maxEnemies:58,kills:0,regen:0,pierce:0});
  player.position.set(0,0,0);ui.startPanel.classList.add('hidden');ui.gameoverPanel.classList.add('hidden');ui.upgradePanel.classList.add('hidden');ui.pause.classList.add('hidden');clock.getDelta();updateHud();
@@ -97,11 +104,11 @@ function reset(){
 
 function spawnEnemy(){
  if(enemies.length>=state.maxEnemies)return;
- const angle=Math.random()*Math.PI*2;
- const dist=27+Math.random()*16;
+ const angle=random()*Math.PI*2;
+ const dist=27+random()*16;
  const tier=Math.min(2,Math.floor(state.time/70));
  const mesh=new THREE.Mesh(enemyGeo,enemyMats[tier]);
- const scale=1+tier*.12+Math.random()*.2;
+ const scale=1+tier*.12+random()*.2;
  mesh.scale.setScalar(scale);mesh.position.set(player.position.x+Math.cos(angle)*dist,.85,player.position.z+Math.sin(angle)*dist);
  mesh.castShadow=true;scene.add(mesh);
  enemies.push({mesh,hp:1+tier+Math.floor(state.time/100),speed:2.45+tier*.55+Math.min(2,state.time*.008),touch:0});
@@ -117,8 +124,8 @@ function fireAtNearest(){
 }
 
 function dropShard(pos){
- const mesh=new THREE.Mesh(shardGeo,shardMat);mesh.position.copy(pos);mesh.position.y=.36;mesh.rotation.set(Math.random()*3,Math.random()*3,0);scene.add(mesh);
- shards.push({mesh,spin:.9+Math.random()*1.8});
+ const mesh=new THREE.Mesh(shardGeo,shardMat);mesh.position.copy(pos);mesh.position.y=.36;mesh.rotation.set(random()*3,random()*3,0);scene.add(mesh);
+ shards.push({mesh,spin:.9+random()*1.8});
 }
 
 function gainXp(){
@@ -191,6 +198,7 @@ function update(dt){
   if(d<.75){scene.remove(s.mesh);shards.splice(i,1);gainXp();}
  }
 
+ if(debugMode){debugMetrics.maxEnemies=Math.max(debugMetrics.maxEnemies,enemies.length);debugMetrics.maxBullets=Math.max(debugMetrics.maxBullets,bullets.length);debugMetrics.maxShards=Math.max(debugMetrics.maxShards,shards.length);}
  const desired=new THREE.Vector3(player.position.x,15.5,player.position.z+18);
  camera.position.lerp(desired,1-Math.pow(.001,dt));
  camera.lookAt(player.position.x,0,player.position.z-2.5);
@@ -206,7 +214,7 @@ function animate(){
  requestAnimationFrame(animate);
  let dt=Math.min(.05,clock.getDelta());
  if(state.running&&!state.paused&&!state.gameOver){update(dt);updateHud();}
- fpsFrames++;fpsTime+=dt;if(fpsTime>.5){ui.fps.textContent=Math.round(fpsFrames/fpsTime);fpsFrames=0;fpsTime=0;}
+ fpsFrames++;fpsTime+=dt;if(debugMode){debugMetrics.frames++;debugMetrics.elapsed+=dt;}if(fpsTime>.5){const measured=Math.round(fpsFrames/fpsTime);ui.fps.textContent=measured;if(debugMode)debugMetrics.lastFps=measured;fpsFrames=0;fpsTime=0;}
  renderer.render(scene,camera);
 }
 animate();
@@ -223,3 +231,5 @@ window.addEventListener('keyup',e=>keys.delete(e.code));
 document.querySelector('#start').addEventListener('click',reset);
 document.querySelector('#restart').addEventListener('click',reset);
 camera.position.set(0,15.5,18);camera.lookAt(0,0,-2);
+
+if(debugMode){window.__VOID_HARVEST_DEBUG__={get snapshot(){return {seed:(Number(debugParams.get('seed'))||1337)>>>0,rngState,time:state.time,hp:state.hp,level:state.level,score:state.score,enemies:enemies.length,bullets:bullets.length,shards:shards.length,renderer:{calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures},metrics:{...debugMetrics}}}};ui.message.textContent='DEBUG MODE · seed '+((Number(debugParams.get('seed'))||1337)>>>0);}
