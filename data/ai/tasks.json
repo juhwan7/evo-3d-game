@@ -49,13 +49,13 @@
     },
     {
       "task_id": "TASK-2026-0005",
-      "title": "Self-healing operations and cross-agent recovery",
-      "owner": "RECOVERY",
+      "title": "AI-C self-healing operations and cross-agent recovery",
+      "owner": "AI-C",
       "status": "ACTIVE",
       "priority": "P0",
       "depends_on": [],
       "success_condition": "Paused/failed/stale execution paths are diagnosed, rerun and verified without freezing unrelated work",
-      "result": "Recovery Queue and cross-agent watchdog contract installed; liveness verification ongoing"
+      "result": "Recovery Queue retained; primary recovery responsibility consolidated into AI-C. No separate Recovery agent."
     }
   ]
 }

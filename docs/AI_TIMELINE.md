@@ -117,3 +117,11 @@ A persistent `data/ai/recovery_queue.json` was introduced. Recovery now follows:
 
 The existing Chromium runtime-verification blocker is also retained as an open recovery item. It must not freeze independent development, but Stable promotion remains blocked until real runtime evidence exists.
 
+## 2026-09-27 06:55 KST · CYCLE-2026-0007 · Role simplification
+
+**Recovery ownership moved into AI-C**
+
+The separate Recovery/Supervisor role was removed. AI-C now owns interruption diagnosis, rerun verification and recovery because those duties overlap directly with Reliability / QA / Architecture. AI-A and AI-B only record interruptions they encounter while continuing their primary development/design work.
+
+Operational cycle returns to three agents: **AI-A → AI-B → AI-C**. The Recovery Queue remains as shared state, but there is no fourth Recovery agent.
+

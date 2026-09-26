@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project": "juhwan7/evo-3d-game",
   "project_phase": "STAGE_1_PROVE_THE_LOOP",
-  "health": "DEGRADED_RUNTIME_UNVERIFIED_SELF_HEALING_ACTIVE",
+  "health": "DEGRADED_RUNTIME_UNVERIFIED_AI_C_RECOVERY_OWNER",
   "stable_ref": "main",
   "experimental_ref": "experimental",
   "current_cycle": "CYCLE-2026-0007",
@@ -19,6 +19,8 @@
     "queue_path": "data/ai/recovery_queue.json",
     "open_count": 2,
     "last_recovery_cycle": "CYCLE-2026-0007",
-    "policy": "detect-diagnose-recover-rerun-verify-resume"
+    "policy": "AI-C owns detect-diagnose-recover-rerun-verify-resume",
+    "owner": "AI-C",
+    "separate_recovery_agent": false
   }
 }

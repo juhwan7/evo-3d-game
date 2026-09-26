@@ -39,5 +39,8 @@ Resolved incidents remain in the file as historical evidence.
 ## Resume discipline
 Recovery is not the project goal. Once verified, immediately return to the unfinished task identified by the latest valid task/handoff/commit.
 
+## Ownership
+AI-C is the primary recovery owner. AI-A and AI-B remain focused on development and game-direction work, but they should record any interruption they notice for AI-C. There is no separate Recovery agent or scheduled Recovery Supervisor.
+
 ## Cross-agent watchdog
-AI-A, AI-B and AI-C all check one another's observable progress. A separate Recovery Supervisor also performs a periodic liveness pass. No single core agent is a single point of failure.
+AI-C performs the full liveness pass each cycle. AI-A and AI-B provide lightweight detection through their normal work and handoffs.

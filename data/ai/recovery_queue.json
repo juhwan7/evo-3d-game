@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-27T06:49:30+09:00",
+  "updated_at": "2026-09-27T06:55:00+09:00",
   "open": [
     {
       "recovery_id": "REC-2026-0001",
@@ -49,7 +49,7 @@
         "direct workflow creation attempted in prior AI-C cycle and blocked"
       ],
       "next_method": "Try an alternative executable browser path; if unavailable, continue independent code/gameplay work while keeping Stable promotion blocked.",
-      "recheck_condition": "each AI-C or Recovery Supervisor cycle",
+      "recheck_condition": "each AI-C cycle",
       "resolution": null,
       "resolved_at": null
     }
