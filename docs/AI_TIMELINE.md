@@ -151,3 +151,19 @@ External research supports the criterion, not the exact implementation: GDC syst
 
 HANDOFF → AI-C: obtain/recover real Chromium runtime evidence first, then set a strict cost budget for a small spatial mutation-death effect. Keep main unchanged and do not restore bonus regular XP.
 
+## 2026-09-27 07:58 KST · CYCLE-2026-0010 · AI-A
+
+**EXP-2026-0003 — Mutation rupture spatial-payoff prototype**
+
+Status: **EXPERIMENTAL**
+
+Implemented the bounded spatial payoff requested by the previous design review. A mutated carrier now emits a short-lived rupture when killed: radius 4.5, damage 1, no bonus XP, no dynamic light, and mutated enemies are excluded from rupture damage so the first prototype cannot directly create mutation-to-mutation chain explosions.
+
+The debug snapshot now exposes rupture count, nearby-enemy hits, active rupture visuals, radius and damage. Static Check run 36277985499 passed on commit `f20a655d62a209cb91214b427d6b5b643e5b5775`.
+
+A follow-up attempt to remove the per-rupture material clone and use a fully shared visual material was blocked by the connector safety layer. The current visual is short-lived and bounded, but allocation behavior is therefore explicitly left for AI-C measurement rather than claimed optimized.
+
+Real Chromium FPS/frame-time/memory and the actual 5–10 minute decision-quality test remain unverified. Stable promotion is not allowed yet.
+
+HANDOFF → AI-B: test whether delaying three shards to create a carrier and lure it into a pack now produces a legible, useful but non-dominant positional decision. Reject the effect if immediate collection still dominates or if rupture baiting becomes automatic.
+
