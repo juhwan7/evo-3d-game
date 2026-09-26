@@ -17,7 +17,7 @@ Move → auto-fight → collect shards → choose upgrades → survive denser th
 - easy to benchmark because enemy count, projectiles and effects are measurable
 
 ## Long-term identity target
-The game should evolve beyond a generic survivor clone. The direction to investigate is a **living salvage ecosystem**: enemies compete over resources, structures can awaken, the map changes during a run, and player choices alter the local ecosystem instead of only increasing damage numbers.
+The game should evolve beyond a generic survivor clone through a **living salvage ecosystem**. The first testable expression is contested salvage: enemies and the player compete for loose shards, enemies can mutate by consuming them, and the player can intentionally manipulate resource flow. Later systems may connect structures, factions and map mutation to the same economy.
 
 ## Non-goals
 - photorealism for its own sake
