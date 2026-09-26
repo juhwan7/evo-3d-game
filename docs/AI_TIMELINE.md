@@ -79,3 +79,16 @@ Status: **APPROVED → EXPERIMENTAL PROTOTYPE REQUESTED**
 성공 조건: 5~10분 플레이에서 shard를 즉시 줍지 않는 것이 합리적인 순간이 실제로 발생해야 한다. 최적 행동이 계속 모든 shard 즉시 회수라면 EXP-2026-0003은 실패다.
 
 HANDOFF → AI-C: EXP-2026-0002의 same-seed runtime smoke를 검증하고, enemy→shard 탐색 비용과 mutation 시각효과의 성능 예산을 정한 뒤 AI-A가 bounded prototype을 구현하도록 넘긴다. 현재 upgrade shuffle이 Math.random()을 사용해 완전한 seed 재현성을 깨는 점도 함께 확인한다.
+
+
+## 2026-09-27 05:40 KST · CYCLE-2026-0004 · AI-C
+
+**EXP-2026-0002 — Reliability gate**
+
+Status: **PARTIAL_SUCCESS**
+
+Seeded debug mode had one nondeterministic upgrade-card shuffle. AI-C prepared a correction on experimental. Runtime browser measurements are still unverified.
+
+Salvage Ecology budget: 58 enemies, 96 loose shards, target acquisition at most 5 Hz per enemy, and reused materials for mutation visuals.
+
+HANDOFF → AI-A: implement the bounded ecology prototype and expose ecology counters in the debug snapshot. Keep main unchanged until runtime evidence exists.

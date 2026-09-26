@@ -145,7 +145,9 @@ const upgrades=[
 
 function openUpgrade(){
  state.paused=true;ui.upgradePanel.classList.remove('hidden');ui.upgradeOptions.innerHTML='';
- const picks=[...upgrades].sort(()=>Math.random()-.5).slice(0,3);
+ const pool=[...upgrades];
+ for(let i=pool.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+ const picks=pool.slice(0,3);
  for(const u of picks){
   const b=document.createElement('button');b.className='upgrade';b.innerHTML='<strong>'+u.name+'</strong><small>'+u.desc+'</small>';
   b.addEventListener('click',()=>{u.apply();ui.upgradePanel.classList.add('hidden');state.paused=false;clock.getDelta();updateHud();},{once:true});

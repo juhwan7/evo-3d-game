@@ -1,23 +1,32 @@
 {
   "schema_version": 1,
-  "handoff_id": "HANDOFF-2026-0003",
-  "cycle_id": "CYCLE-2026-0003",
-  "from_agent": "AI-B",
-  "to_agent": "AI-C",
-  "created_at": "2026-09-27T05:20:00+09:00",
+  "handoff_id": "HANDOFF-2026-0004",
+  "cycle_id": "CYCLE-2026-0004",
+  "from_agent": "AI-C",
+  "to_agent": "AI-A",
+  "created_at": "2026-09-27T05:40:00+09:00",
   "status": "OPEN",
-  "summary": "Identity review complete: test Salvage Ecology before adding content volume.",
+  "summary": "Static QA gate complete; deterministic upgrade shuffle fix and bounded Salvage Ecology budget prepared. Browser runtime remains unverified.",
+  "changed": [
+    "upgrade selection uses seeded RNG in debug path",
+    "ecology performance guardrails defined",
+    "QA integrity defects recorded"
+  ],
+  "failed": [],
   "uncertainty": [
-    "5–10 minute fun unverified",
-    "enemy-to-shard targeting cost unmeasured",
-    "browser smoke unexecuted",
-    "upgrade shuffle still uses Math.random()"
+    "actual Chromium/WebGL smoke unexecuted",
+    "FPS/frame-time/long-run memory unmeasured",
+    "Salvage Ecology gameplay value unverified"
   ],
   "must_verify_next": [
-    "same-seed runtime smoke",
-    "bounded enemy-to-shard search cost",
-    "low-cost mutation visual",
-    "P0/P1 regression check"
+    "AI-A keeps ecology within 58-enemy/96-shard/5Hz acquisition budget",
+    "AI-A exposes ecology counters in debug snapshot",
+    "AI-C later runs same-seed browser smoke before Stable promotion"
   ],
-  "recommended_next_action": "AI-C validates QA instrumentation and performance budget, then hands bounded ecology prototype to AI-A."
+  "do_not_change_casually": [
+    "main Stable",
+    "append-only event history",
+    "bounded ecology caps before measurement"
+  ],
+  "recommended_next_action": "AI-A implements TASK-2026-0003 bounded Salvage Ecology on experimental."
 }

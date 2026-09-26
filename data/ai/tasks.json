@@ -16,18 +16,19 @@
       "task_id": "TASK-2026-0002",
       "title": "Runtime and performance verification",
       "owner": "AI-C",
-      "status": "READY",
+      "status": "PARTIAL_SUCCESS",
       "priority": "P2",
       "depends_on": [
         "TASK-2026-0001"
       ],
-      "success_condition": "Runtime risks and measurable performance evidence recorded"
+      "success_condition": "Runtime risks and measurable performance evidence recorded",
+      "result": "Static QA completed; deterministic RNG defect fixed and performance guardrails defined. Browser runtime remains unverified."
     },
     {
       "task_id": "TASK-2026-0003",
       "title": "Salvage Ecology bounded prototype",
       "owner": "AI-A",
-      "status": "BLOCKED_BY_HANDOFF",
+      "status": "READY",
       "priority": "P3",
       "depends_on": [
         "TASK-2026-0002"

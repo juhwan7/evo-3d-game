@@ -12,7 +12,8 @@
 - [x] AI-B independent gameplay critique
 - [ ] AI-C runtime and performance verification
 - [ ] resolve P0/P1 findings
-- [x] establish a unique systemic hook hypothesis — Salvage Ecology\n- [ ] prototype and validate Salvage Ecology
+- [x] establish a unique systemic hook hypothesis — Salvage Ecology
+- [ ] prototype and validate Salvage Ecology
 - [ ] 5–10 minute run pacing pass
 
 ## Stage 2 — deepen identity
