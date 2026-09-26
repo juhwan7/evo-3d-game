@@ -1,6 +1,6 @@
 import { chromium } from 'playwright';
 
-const url=process.env.SMOKE_URL || 'http://127.0.0.1:8080/';
+const url=process.env.SMOKE_URL || 'http://127.0.0.1:8080/?debug=1&seed=1337';
 const browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-webgl','--ignore-gpu-blocklist']});
 const page=await browser.newPage({viewport:{width:1280,height:720}});
 const errors=[];
@@ -13,7 +13,8 @@ const result=await page.evaluate(()=>({
  fps:document.querySelector('#fps')?.textContent,
  hp:document.querySelector('#hp')?.textContent,
  canvas:{w:document.querySelector('#game')?.width,h:document.querySelector('#game')?.height},
- startHidden:document.querySelector('#start-panel')?.classList.contains('hidden')
+ startHidden:document.querySelector('#start-panel')?.classList.contains('hidden'),
+ debug:window.__VOID_HARVEST_DEBUG__?.snapshot
 }));
 console.log(JSON.stringify(result));
 if(errors.length) throw new Error(errors.join('\n'));
@@ -21,4 +22,6 @@ if(!result.startHidden) throw new Error('game did not leave start panel');
 if(!/^\d+$/.test(result.fps||'')) throw new Error('FPS HUD did not become numeric');
 if(Number(result.hp)<=0) throw new Error('player died during smoke window');
 if(!result.canvas.w||!result.canvas.h) throw new Error('canvas has zero drawing-buffer size');
+if(!result.debug) throw new Error('deterministic debug snapshot unavailable');
+if(result.debug.renderer.calls<=0) throw new Error('renderer reported zero draw calls');
 await browser.close();
