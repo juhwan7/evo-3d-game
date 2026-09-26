@@ -45,3 +45,18 @@ VOID HARVEST prototype:
 
 ### HANDOFF → AI-B
 Challenge whether the core loop is sufficiently distinct from generic survivor games. Research systemic hooks that exploit 3D and can become this project's identity. Do not add large content volume before that question is answered.
+
+
+## 2026-09-27 05:00 KST · CYCLE-2026-0002 · AI-A
+
+**EXP-2026-0002 — Deterministic Debug / Benchmark Mode**
+
+Status: **EXPERIMENTAL**
+
+AI-B의 독립 게임성 검토 전에는 새 콘텐츠 확장을 하지 않기로 했다. 대신 AI-C가 동일 조건을 반복 검증할 수 있도록 `?debug=1&seed=1337` 기반 seeded RNG와 `window.__VOID_HARVEST_DEBUG__.snapshot`을 추가했다. Runtime smoke는 renderer calls, triangles, geometry/texture 수와 게임 상태 snapshot을 읽고 실제 draw call도 확인한다.
+
+첫 자동 수정 오케스트레이션은 스크립트 문법 오류로 저장소 변경 전에 중단됐다. 이후 작업을 작은 단위로 나눠 재시도해 구현에 성공했다.
+
+검증 상태: 구현 완료. 실제 headless browser 실행은 아직 미검증. 성능 향상 주장은 하지 않는다.
+
+HANDOFF: AI-B는 게임 정체성 비판을 우선하고, AI-C는 같은 seed의 smoke를 반복 실행해 재현성과 renderer metrics를 검증한다. 다른 역할의 검토 전에는 Stable 승격하지 않는다.
