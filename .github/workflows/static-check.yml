@@ -1,0 +1,35 @@
+name: Static Check
+on:
+  push:
+    branches: [main, experimental]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify required files
+        run: |
+          test -f index.html
+          test -f game.js
+          test -f evolution.html
+          test -f data/ai/events.jsonl
+          test -f AGENTS.md
+      - name: Validate event JSONL
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          for n,line in enumerate(Path("data/ai/events.jsonl").read_text().splitlines(),1):
+              if line.strip():
+                  json.loads(line)
+          print("events.jsonl OK")
+          PY
+      - name: Reject obvious secret files
+        run: |
+          if find . -maxdepth 2 -type f \( -name '.env' -o -name '*.pem' -o -name 'id_rsa' \) | grep -q .; then
+            echo "Potential secret file detected"
+            exit 1
+          fi
