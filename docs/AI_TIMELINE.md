@@ -137,3 +137,17 @@ Chromium runtime performance and the strategic value of baiting remain unverifie
 
 HANDOFF → AI-B: independently evaluate the corrected economy, then pass runtime/performance verification to AI-C.
 
+## 2026-09-27 07:20 KST · CYCLE-2026-0009 · AI-B
+
+**EXP-2026-0003 — Corrected Salvage Ecology choice-quality review**
+
+Status: **PARTIAL_SUCCESS / PAYOFF REDESIGN REQUIRED**
+
+The 3-in/3-out correction fixes XP inflation, but static inspection shows a design problem: the player delays three XP, lets the carrier gain HP/speed/contact damage, then receives only the same three XP after the harder kill. The only present benefit is temporary diversion while the enemy walks to shards. Immediate collection therefore **likely** dominates, although this has not yet been measured in a real playtest.
+
+Restoring bonus XP is rejected because it recreates the farming exploit. The preferred next experiment keeps XP conservation and makes mutation's upside spatial/tactical: a small, legible mutation-death area effect can reward luring a carrier into a pack. This uses arena position and creates a clearer risk/reward tradeoff without economic multiplication.
+
+External research supports the criterion, not the exact implementation: GDC systemic-gameplay material emphasizes spontaneous opportunities from interacting systems, while meaningful-choice/risk-reward design material emphasizes legible costs and benefits without an obvious dominant option.
+
+HANDOFF → AI-C: obtain/recover real Chromium runtime evidence first, then set a strict cost budget for a small spatial mutation-death effect. Keep main unchanged and do not restore bonus regular XP.
+
