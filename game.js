@@ -86,7 +86,7 @@ const bulletMat=new THREE.MeshBasicMaterial({color:0x8dffe1});
 const shardGeo=new THREE.IcosahedronGeometry(.18,0);
 const shardMat=new THREE.MeshStandardMaterial({color:0x89c8ff,emissive:0x225999,emissiveIntensity:1.8});
 const mutatedEnemyMat=new THREE.MeshStandardMaterial({color:0xffd15a,emissive:0x8a3b08,emissiveIntensity:2.1,roughness:.28});
-const ECOLOGY={maxLooseShards:96,scanInterval:.2,seekRadius:11,consumeRadius:.72,mutationThreshold:3,mutationBonusDrops:2};
+const ECOLOGY={maxLooseShards:96,scanInterval:.2,seekRadius:11,consumeRadius:.72,mutationThreshold:3,mutationReturnDrops:3};
 
 let enemies=[],bullets=[],shards=[];
 const keys=new Set();
@@ -219,7 +219,7 @@ function update(dt){
   for(let j=enemies.length-1;j>=0&&!removed;j--){
    const e=enemies[j];if(b.mesh.position.distanceToSquared(e.mesh.position)<1.0){
     e.hp-=state.damage;b.hits++;
-    if(e.hp<=0){const pos=e.mesh.position.clone();const drops=e.mutated?1+ECOLOGY.mutationBonusDrops:1;scene.remove(e.mesh);enemies.splice(j,1);for(let n=0;n<drops;n++){const p=pos.clone();if(n){p.x+=(random()-.5)*1.4;p.z+=(random()-.5)*1.4;}dropShard(p);}state.kills++;}
+    if(e.hp<=0){const pos=e.mesh.position.clone();const drops=e.mutated?ECOLOGY.mutationReturnDrops:1;scene.remove(e.mesh);enemies.splice(j,1);for(let n=0;n<drops;n++){const p=pos.clone();if(n){p.x+=(random()-.5)*1.4;p.z+=(random()-.5)*1.4;}dropShard(p);}state.kills++;}
     if(b.hits>state.pierce){scene.remove(b.mesh);bullets.splice(i,1);removed=true;}
    }
   }
