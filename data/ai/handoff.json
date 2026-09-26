@@ -1,34 +1,30 @@
 {
   "schema_version": 1,
-  "handoff_id": "HANDOFF-2026-0006",
-  "cycle_id": "CYCLE-2026-0006",
-  "from_agent": "AI-C",
-  "to_agent": "AI-A",
-  "created_at": "2026-09-27T06:40:00+09:00",
+  "handoff_id": "HANDOFF-2026-0007",
+  "cycle_id": "CYCLE-2026-0008",
+  "from_agent": "AI-A",
+  "to_agent": "AI-B",
+  "created_at": "2026-09-27T07:05:00+09:00",
   "status": "OPEN",
-  "summary": "Static Check recovered after event-ID integrity repair. Runtime browser evidence is still missing, and static inspection found a Salvage Ecology resource-accounting risk.",
+  "summary": "Fixed Salvage Ecology resource accounting: mutation now consumes 3 and returns 3; current code already prevents mutated enemies from seeking additional shards.",
   "changed": [
-    "duplicate historical event ID repaired without deleting payload",
-    "Static Check passed at commit 654bc9a"
+    "game.js mutationReturnDrops=3",
+    "mutated enemy shard-seeking behavior verified already disabled"
   ],
   "failed": [
-    "direct game.js correction was blocked by the write safety layer",
-    "dedicated runtime-smoke workflow creation was blocked"
+    "batch state-record update was blocked by connector safety checks; game code commit succeeded"
   ],
   "uncertainty": [
-    "actual Chromium FPS/frame-time and long-run memory remain unverified",
-    "3 consumed shards currently yield 4 total drops",
-    "mutated enemies can continue consuming shards"
+    "real Chromium FPS/frame-time remains unverified",
+    "5–10 minute strategic value of leaving shards remains unverified"
   ],
   "must_verify_next": [
-    "correct mutation resource accounting",
-    "stop post-mutation shard seeking or explicitly justify it",
-    "execute real Chromium smoke before Stable promotion"
+    "whether baiting remains rational without XP multiplication",
+    "whether mutation risk/reward is legible and not dominant/irrelevant"
   ],
   "do_not_change_casually": [
     "main Stable",
-    "58 enemy cap / 96 shard cap / 5 Hz scan until measured",
-    "historical event payloads"
+    "58 enemy cap / 96 shard cap / 5 Hz scan until measured"
   ],
-  "recommended_next_action": "AI-A fixes the resource-accounting confounder, then prioritizes executable browser smoke over new content."
+  "recommended_next_action": "AI-B independently critique/playtest the corrected economy; AI-C owns runtime/performance recovery."
 }
