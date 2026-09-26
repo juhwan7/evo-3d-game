@@ -1,7 +1,33 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-27T06:46:00+09:00",
+  "updated_at": "2026-09-27T06:49:30+09:00",
   "open": [
+    {
+      "recovery_id": "REC-2026-0001",
+      "detected_at": "2026-09-27T06:46:00+09:00",
+      "component": "ChatGPT automation AI-B",
+      "task": "AI-B hourly scheduled run",
+      "last_known_good": "2026-09-27 05:20 KST run",
+      "current_status": "RERUN_SCHEDULED_PENDING_VERIFICATION",
+      "symptoms": [
+        "automation was disabled after a write-safety failure"
+      ],
+      "confirmed_facts": [
+        "AI-B automation was disabled",
+        "project itself remained writable and Static Check was green"
+      ],
+      "suspected_causes": [
+        "automation was intentionally disabled after a single connector/write-safety failure instead of remaining recoverable"
+      ],
+      "attempted_methods": [
+        "re-enable automation",
+        "add recovery preflight to all core agent prompts"
+      ],
+      "next_method": "Verify a post-reenable AI-B scheduled run creates real progress evidence; only then mark resolved.",
+      "recheck_condition": "next AI-B scheduled run",
+      "resolution": null,
+      "resolved_at": null
+    },
     {
       "recovery_id": "REC-2026-0002",
       "detected_at": "2026-09-27T06:40:00+09:00",
@@ -28,32 +54,5 @@
       "resolved_at": null
     }
   ],
-  "resolved": [
-    {
-      "recovery_id": "REC-2026-0001",
-      "detected_at": "2026-09-27T06:46:00+09:00",
-      "component": "ChatGPT automation AI-B",
-      "task": "AI-B hourly scheduled run",
-      "last_known_good": "2026-09-27 05:20 KST run",
-      "current_status": "RESOLVED_PENDING_NEXT_RUN_VERIFICATION",
-      "symptoms": [
-        "automation was disabled after a write-safety failure"
-      ],
-      "confirmed_facts": [
-        "AI-B automation was disabled",
-        "project itself remained writable and Static Check was green"
-      ],
-      "suspected_causes": [
-        "automation was intentionally disabled after a single connector/write-safety failure instead of remaining recoverable"
-      ],
-      "attempted_methods": [
-        "re-enable automation",
-        "add recovery preflight to all core agent prompts"
-      ],
-      "next_method": "Verify AI-B produces a later run and leaves progress evidence; if it fails again, diagnose connector/write path instead of disabling permanently.",
-      "recheck_condition": "next scheduled AI-B run",
-      "resolution": "Automation scheduled to be re-enabled and cross-agent recovery rules installed.",
-      "resolved_at": "2026-09-27T06:46:00+09:00"
-    }
-  ]
+  "resolved": []
 }

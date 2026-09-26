@@ -17,7 +17,7 @@
   },
   "recovery": {
     "queue_path": "data/ai/recovery_queue.json",
-    "open_count": 1,
+    "open_count": 2,
     "last_recovery_cycle": "CYCLE-2026-0007",
     "policy": "detect-diagnose-recover-rerun-verify-resume"
   }
