@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "project": "juhwan7/evo-3d-game",
+  "project_phase": "STAGE_1_PROVE_THE_LOOP",
+  "health": "HEALTHY_WITH_UNVERIFIED_RUNTIME",
+  "stable_ref": "main",
+  "experimental_ref": "experimental",
+  "current_cycle": "CYCLE-2026-0001",
+  "last_agent": "AI-A",
+  "next_agent": "AI-B",
+  "active_experiment": null,
+  "top_priority": "Independently critique gameplay identity before expanding content",
+  "schedule_kst": {"AI-A":"hourly at :00","AI-B":"hourly at :20","AI-C":"hourly at :40"}
+}
