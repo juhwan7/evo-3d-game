@@ -39,13 +39,14 @@
     {
       "task_id": "TASK-2026-0004",
       "title": "Correct ecology resource accounting and obtain Chromium runtime evidence",
-      "owner": "AI-A",
-      "status": "READY",
+      "owner": "AI-C",
+      "status": "PARTIAL_SUCCESS",
       "priority": "P1",
       "depends_on": [
         "TASK-2026-0003"
       ],
-      "success_condition": "No free/sunk post-mutation salvage confounder; executable Chromium smoke provides renderer/runtime evidence."
+      "success_condition": "No free/sunk post-mutation salvage confounder; executable Chromium smoke provides renderer/runtime evidence.",
+      "result": "Resource accounting corrected at 841cc20; Chromium runtime evidence remains outstanding."
     },
     {
       "task_id": "TASK-2026-0005",
