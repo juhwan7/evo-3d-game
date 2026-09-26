@@ -35,3 +35,19 @@ Why this direction:
 **Rejected for now:** adding bosses, more weapons, more upgrade cards, larger maps, or meta-progression before the core interaction becomes distinctive.
 
 **Success hypothesis:** in a 5–10 minute run, players should sometimes choose *not* to collect a shard immediately because manipulating who reaches it first is strategically useful.
+
+## DEC-2026-0004 — Mutation reward must not inflate XP
+**Status:** APPROVED FOR NEXT EXPERIMENT
+
+The corrected 3-in/3-out economy is retained. Bonus regular shards are rejected because they would turn intentional mutation back into a resource-farming engine.
+
+Resource conservation alone, however, removes the promised positive payoff: the carrier becomes harder while returning only delayed XP. The next bounded experiment should add a **spatial/tactical** mutation payoff rather than economic multiplication. Preferred candidate: defeating a mutated carrier near other enemies causes a small, legible area effect that rewards deliberate lure/cluster play.
+
+Guardrails:
+- regular XP remains 3 consumed → 3 returned;
+- no permanent meta currency;
+- no per-enemy dynamic light;
+- effect must be readable in the 3D arena;
+- effect must have a measurable radius/cost and be exposed to debug metrics;
+- if immediate collection still dominates in play, revisit or reject Salvage Ecology rather than stacking more rewards.
+
