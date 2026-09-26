@@ -22,3 +22,9 @@ Guardrails, not measured performance claims:
 - mutation visuals reuse geometry/materials and scale/emissive changes, without per-enemy dynamic lights.
 
 Actual Chromium/WebGL smoke, FPS, frame time and long-run memory remain unverified in this cycle.
+
+## CYCLE-2026-0006 QA evidence
+- Static Check at pre-fix head `cf1f4b1`: FAILED because of duplicate event ID.
+- Static Check at repair commit `654bc9a`: SUCCESS.
+- Chromium/WebGL FPS, frame time and long-run memory: still unverified; no performance claim.
+- Static balance inspection found a resource-accounting risk: current code consumes 3 shards for mutation but drops 4 total, and mutated enemies may keep consuming shards. This remains an open gameplay/reliability correction because the code write was blocked in this run.
