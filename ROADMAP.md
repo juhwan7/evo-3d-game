@@ -9,10 +9,10 @@
 - [x] status page
 
 ## Stage 1 — prove the loop
-- [ ] AI-B independent gameplay critique
+- [x] AI-B independent gameplay critique
 - [ ] AI-C runtime and performance verification
 - [ ] resolve P0/P1 findings
-- [ ] establish a unique systemic hook
+- [x] establish a unique systemic hook hypothesis — Salvage Ecology\n- [ ] prototype and validate Salvage Ecology
 - [ ] 5–10 minute run pacing pass
 
 ## Stage 2 — deepen identity
