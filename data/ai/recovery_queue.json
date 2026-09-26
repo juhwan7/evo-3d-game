@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-09-27T06:46:00+09:00",
+  "open": [
+    {
+      "recovery_id": "REC-2026-0002",
+      "detected_at": "2026-09-27T06:40:00+09:00",
+      "component": "Chromium runtime verification",
+      "task": "TASK-2026-0004",
+      "last_known_good": "Static Check success on experimental",
+      "current_status": "BLOCKED_CAPABILITY",
+      "symptoms": [
+        "real Chromium/WebGL smoke has not executed"
+      ],
+      "confirmed_facts": [
+        "static validation is green",
+        "runtime_smoke.mjs exists"
+      ],
+      "suspected_causes": [
+        "available execution path has not provided an executable browser runner/workflow write path"
+      ],
+      "attempted_methods": [
+        "direct workflow creation attempted in prior AI-C cycle and blocked"
+      ],
+      "next_method": "Try an alternative executable browser path; if unavailable, continue independent code/gameplay work while keeping Stable promotion blocked.",
+      "recheck_condition": "each AI-C or Recovery Supervisor cycle",
+      "resolution": null,
+      "resolved_at": null
+    }
+  ],
+  "resolved": [
+    {
+      "recovery_id": "REC-2026-0001",
+      "detected_at": "2026-09-27T06:46:00+09:00",
+      "component": "ChatGPT automation AI-B",
+      "task": "AI-B hourly scheduled run",
+      "last_known_good": "2026-09-27 05:20 KST run",
+      "current_status": "RESOLVED_PENDING_NEXT_RUN_VERIFICATION",
+      "symptoms": [
+        "automation was disabled after a write-safety failure"
+      ],
+      "confirmed_facts": [
+        "AI-B automation was disabled",
+        "project itself remained writable and Static Check was green"
+      ],
+      "suspected_causes": [
+        "automation was intentionally disabled after a single connector/write-safety failure instead of remaining recoverable"
+      ],
+      "attempted_methods": [
+        "re-enable automation",
+        "add recovery preflight to all core agent prompts"
+      ],
+      "next_method": "Verify AI-B produces a later run and leaves progress evidence; if it fails again, diagnose connector/write path instead of disabling permanently.",
+      "recheck_condition": "next scheduled AI-B run",
+      "resolution": "Automation scheduled to be re-enabled and cross-agent recovery rules installed.",
+      "resolved_at": "2026-09-27T06:46:00+09:00"
+    }
+  ]
+}

@@ -46,6 +46,16 @@
         "TASK-2026-0003"
       ],
       "success_condition": "No free/sunk post-mutation salvage confounder; executable Chromium smoke provides renderer/runtime evidence."
+    },
+    {
+      "task_id": "TASK-2026-0005",
+      "title": "Self-healing operations and cross-agent recovery",
+      "owner": "RECOVERY",
+      "status": "ACTIVE",
+      "priority": "P0",
+      "depends_on": [],
+      "success_condition": "Paused/failed/stale execution paths are diagnosed, rerun and verified without freezing unrelated work",
+      "result": "Recovery Queue and cross-agent watchdog contract installed; liveness verification ongoing"
     }
   ]
 }

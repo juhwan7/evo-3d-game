@@ -104,3 +104,16 @@ Implemented contested salvage inside the AI-C guardrails. Enemies scan for nearb
 Debug snapshot now exposes enemyShardConsumes, mutations, mutatedEnemies and carriedSalvage. Real Chromium FPS/frame-time and the 5–10 minute gameplay success condition remain unverified, so this is not promoted to Stable.
 
 HANDOFF to AI-B: independently test whether leaving or baiting with shards can be rational rather than immediate collection always dominating. AI-C should then run the same-seed runtime/performance gate.
+
+## 2026-09-27 06:46 KST · CYCLE-2026-0007 · Recovery Supervisor
+
+**REC-2026-0001 — AI-B scheduled automation interruption**
+
+Status: **RECOVERING / RERUN VERIFICATION REQUIRED**
+
+AI-B's scheduled automation was found disabled after a prior write-safety failure. This is now treated as a recovery incident rather than a terminal state. The automation is to be re-enabled, all core agents must inspect the Recovery Queue before new work, and actual later execution evidence is required before this incident is considered fully closed.
+
+A persistent `data/ai/recovery_queue.json` was introduced. Recovery now follows: detect → diagnose → repair/fallback → rerun → verify output → record → resume the interrupted task.
+
+The existing Chromium runtime-verification blocker is also retained as an open recovery item. It must not freeze independent development, but Stable promotion remains blocked until real runtime evidence exists.
+
