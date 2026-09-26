@@ -86,11 +86,13 @@ const bulletMat=new THREE.MeshBasicMaterial({color:0x8dffe1});
 const shardGeo=new THREE.IcosahedronGeometry(.18,0);
 const shardMat=new THREE.MeshStandardMaterial({color:0x89c8ff,emissive:0x225999,emissiveIntensity:1.8});
 const mutatedEnemyMat=new THREE.MeshStandardMaterial({color:0xffd15a,emissive:0x8a3b08,emissiveIntensity:2.1,roughness:.28});
-const ECOLOGY={maxLooseShards:96,scanInterval:.2,seekRadius:11,consumeRadius:.72,mutationThreshold:3,mutationReturnDrops:3};
+const ruptureGeo=new THREE.RingGeometry(.72,1,32);
+const ruptureMat=new THREE.MeshBasicMaterial({color:0xffd15a,transparent:true,opacity:.78,side:THREE.DoubleSide,depthWrite:false});
+const ECOLOGY={maxLooseShards:96,scanInterval:.2,seekRadius:11,consumeRadius:.72,mutationThreshold:3,mutationReturnDrops:3,ruptureRadius:4.5,ruptureDamage:1,ruptureLife:.34};
 
-let enemies=[],bullets=[],shards=[];
+let enemies=[],bullets=[],shards=[],ruptures=[];
 const keys=new Set();
-const debugMetrics={frames:0,elapsed:0,lastFps:0,maxEnemies:0,maxBullets:0,maxShards:0,enemyShardConsumes:0,mutations:0};
+const debugMetrics={frames:0,elapsed:0,lastFps:0,maxEnemies:0,maxBullets:0,maxShards:0,enemyShardConsumes:0,mutations:0,mutationRuptures:0,ruptureEnemyHits:0};
 const state={
  running:false,paused:false,gameOver:false,time:0,hp:100,maxHp:100,level:1,xp:0,nextXp:7,score:0,
  speed:8.4,fireRate:.48,fireTimer:0,damage:1,bulletSpeed:24,magnet:2.2,spawnTimer:0,spawnEvery:1.05,maxEnemies:58,
@@ -98,9 +100,9 @@ const state={
 };
 
 function reset(){
- if(debugMode){rngState=(Number(debugParams.get('seed'))||1337)>>>0;Object.assign(debugMetrics,{frames:0,elapsed:0,lastFps:0,maxEnemies:0,maxBullets:0,maxShards:0,enemyShardConsumes:0,mutations:0});}
- enemies.forEach(x=>scene.remove(x.mesh));bullets.forEach(x=>scene.remove(x.mesh));shards.forEach(x=>scene.remove(x.mesh));
- enemies=[];bullets=[];shards=[];Object.assign(state,{running:true,paused:false,gameOver:false,time:0,hp:100,maxHp:100,level:1,xp:0,nextXp:7,score:0,speed:8.4,fireRate:.48,fireTimer:0,damage:1,bulletSpeed:24,magnet:2.2,spawnTimer:0,spawnEvery:1.05,maxEnemies:58,kills:0,regen:0,pierce:0});
+ if(debugMode){rngState=(Number(debugParams.get('seed'))||1337)>>>0;Object.assign(debugMetrics,{frames:0,elapsed:0,lastFps:0,maxEnemies:0,maxBullets:0,maxShards:0,enemyShardConsumes:0,mutations:0,mutationRuptures:0,ruptureEnemyHits:0});}
+ enemies.forEach(x=>scene.remove(x.mesh));bullets.forEach(x=>scene.remove(x.mesh));shards.forEach(x=>scene.remove(x.mesh));ruptures.forEach(x=>scene.remove(x.mesh));
+ enemies=[];bullets=[];shards=[];ruptures=[];Object.assign(state,{running:true,paused:false,gameOver:false,time:0,hp:100,maxHp:100,level:1,xp:0,nextXp:7,score:0,speed:8.4,fireRate:.48,fireTimer:0,damage:1,bulletSpeed:24,magnet:2.2,spawnTimer:0,spawnEvery:1.05,maxEnemies:58,kills:0,regen:0,pierce:0});
  player.position.set(0,0,0);ui.startPanel.classList.add('hidden');ui.gameoverPanel.classList.add('hidden');ui.upgradePanel.classList.add('hidden');ui.pause.classList.add('hidden');clock.getDelta();updateHud();
 }
 
@@ -150,6 +152,19 @@ function acquireShardTarget(e){
  let best=null,bestD=ECOLOGY.seekRadius*ECOLOGY.seekRadius;
  for(const s of shards){const d=e.mesh.position.distanceToSquared(s.mesh.position);if(d<bestD){best=s;bestD=d;}}
  e.targetShard=best;
+}
+
+function triggerMutationRupture(pos,sourceEnemy){
+ const radiusSq=ECOLOGY.ruptureRadius*ECOLOGY.ruptureRadius;
+ let hits=0;
+ for(const other of enemies){
+  if(other===sourceEnemy||other.mutated)continue;
+  if(other.mesh.position.distanceToSquared(pos)<=radiusSq){other.hp-=ECOLOGY.ruptureDamage;hits++;}
+ }
+ const mesh=new THREE.Mesh(ruptureGeo,ruptureMat.clone());
+ mesh.rotation.x=-Math.PI/2;mesh.position.copy(pos);mesh.position.y=.08;scene.add(mesh);
+ ruptures.push({mesh,life:ECOLOGY.ruptureLife,maxLife:ECOLOGY.ruptureLife});
+ if(debugMode){debugMetrics.mutationRuptures++;debugMetrics.ruptureEnemyHits+=hits;}
 }
 
 function gainXp(){
@@ -219,11 +234,16 @@ function update(dt){
   for(let j=enemies.length-1;j>=0&&!removed;j--){
    const e=enemies[j];if(b.mesh.position.distanceToSquared(e.mesh.position)<1.0){
     e.hp-=state.damage;b.hits++;
-    if(e.hp<=0){const pos=e.mesh.position.clone();const drops=e.mutated?ECOLOGY.mutationReturnDrops:1;scene.remove(e.mesh);enemies.splice(j,1);for(let n=0;n<drops;n++){const p=pos.clone();if(n){p.x+=(random()-.5)*1.4;p.z+=(random()-.5)*1.4;}dropShard(p);}state.kills++;}
+    if(e.hp<=0){const pos=e.mesh.position.clone();const wasMutated=e.mutated;const drops=wasMutated?ECOLOGY.mutationReturnDrops:1;if(wasMutated)triggerMutationRupture(pos,e);scene.remove(e.mesh);enemies.splice(j,1);for(let n=0;n<drops;n++){const p=pos.clone();if(n){p.x+=(random()-.5)*1.4;p.z+=(random()-.5)*1.4;}dropShard(p);}state.kills++;}
     if(b.hits>state.pierce){scene.remove(b.mesh);bullets.splice(i,1);removed=true;}
    }
   }
   if(!removed&&b.life<=0){scene.remove(b.mesh);bullets.splice(i,1);}
+ }
+
+ for(let i=ruptures.length-1;i>=0;i--){
+  const r=ruptures[i];r.life-=dt;const progress=1-r.life/r.maxLife;r.mesh.scale.setScalar(1+progress*ECOLOGY.ruptureRadius);r.mesh.material.opacity=Math.max(0,.78*(1-progress));
+  if(r.life<=0){scene.remove(r.mesh);r.mesh.material.dispose();ruptures.splice(i,1);}
  }
 
  for(let i=shards.length-1;i>=0;i--){
@@ -267,4 +287,4 @@ document.querySelector('#start').addEventListener('click',reset);
 document.querySelector('#restart').addEventListener('click',reset);
 camera.position.set(0,15.5,18);camera.lookAt(0,0,-2);
 
-if(debugMode){window.__VOID_HARVEST_DEBUG__={get snapshot(){return {seed:(Number(debugParams.get('seed'))||1337)>>>0,rngState,time:state.time,hp:state.hp,level:state.level,score:state.score,enemies:enemies.length,bullets:bullets.length,shards:shards.length,ecology:{mutatedEnemies:enemies.filter(e=>e.mutated).length,carriedSalvage:enemies.reduce((sum,e)=>sum+e.salvage,0),enemyShardConsumes:debugMetrics.enemyShardConsumes,mutations:debugMetrics.mutations,maxLooseShards:ECOLOGY.maxLooseShards,scanHz:1/ECOLOGY.scanInterval},renderer:{calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures},metrics:{...debugMetrics}}}};ui.message.textContent='DEBUG MODE · seed '+((Number(debugParams.get('seed'))||1337)>>>0)+' · SALVAGE ECOLOGY';}
+if(debugMode){window.__VOID_HARVEST_DEBUG__={get snapshot(){return {seed:(Number(debugParams.get('seed'))||1337)>>>0,rngState,time:state.time,hp:state.hp,level:state.level,score:state.score,enemies:enemies.length,bullets:bullets.length,shards:shards.length,ecology:{mutatedEnemies:enemies.filter(e=>e.mutated).length,carriedSalvage:enemies.reduce((sum,e)=>sum+e.salvage,0),enemyShardConsumes:debugMetrics.enemyShardConsumes,mutations:debugMetrics.mutations,mutationRuptures:debugMetrics.mutationRuptures,ruptureEnemyHits:debugMetrics.ruptureEnemyHits,activeRuptures:ruptures.length,maxLooseShards:ECOLOGY.maxLooseShards,scanHz:1/ECOLOGY.scanInterval,ruptureRadius:ECOLOGY.ruptureRadius,ruptureDamage:ECOLOGY.ruptureDamage},renderer:{calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures},metrics:{...debugMetrics}}}};ui.message.textContent='DEBUG MODE · seed '+((Number(debugParams.get('seed'))||1337)>>>0)+' · SALVAGE ECOLOGY';}
