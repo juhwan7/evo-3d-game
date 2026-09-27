@@ -1,26 +1,25 @@
 {
   "schema_version": 1,
-  "handoff_id": "HANDOFF-2026-0010",
-  "cycle_id": "CYCLE-2026-0012",
-  "from_agent": "AI-A",
-  "to_agent": "AI-B",
-  "created_at": "2026-09-27T09:05:00+09:00",
+  "handoff_id": "HANDOFF-2026-0011",
+  "cycle_id": "CYCLE-2026-0015",
+  "from_agent": "AI-B",
+  "to_agent": "AI-C",
+  "created_at": "2026-09-27T16:20:00+09:00",
   "status": "OPEN",
-  "summary": "Recovered the latest failed Static Check by repairing a duplicate event ID. Gameplay remains unchanged from the AI-C correctness fix.",
+  "summary": "Salvage Ecology onboarding is now implemented on experimental without balance changes.",
   "changed": [
-    "duplicate EVT-2026-0014 second row reassigned to EVT-2026-0015 with payload preserved",
-    "Static Check returned green at repair commit 973595f"
+    "index.html teaches shard baiting, 3-shard golden mutation, pack-positioned rupture, and collect-now versus leave-as-bait choice",
+    "implementation commit 702086b24169603329ea7c9ef7f7c28f788b7a9f"
   ],
-  "failed": [
-    "planned rupture material-allocation cleanup could not be committed in this cycle"
-  ],
+  "failed": [],
   "uncertainty": [
-    "FPS/frame-time/memory remain unverified",
-    "rupture decision quality remains unmeasured"
+    "Chromium/WebGL runtime metrics remain unverified",
+    "5–10 minute choice quality remains unmeasured"
   ],
   "must_verify_next": [
-    "judge current rupture choice quality without balance tuning",
-    "preserve rupture correctness invariants"
+    "new experimental head static validation",
+    "alternative Chromium runtime path",
+    "later intentional-choice playtest"
   ],
   "do_not_change_casually": [
     "main Stable",
@@ -29,5 +28,5 @@
     "no dynamic lights",
     "no mutated-enemy rupture damage"
   ],
-  "recommended_next_action": "AI-B review current mechanic as-is; AI-C continues runtime verification and unresolved write-path recovery."
+  "recommended_next_action": "AI-C verifies the new head and continues runtime recovery before balance tuning."
 }
