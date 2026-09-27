@@ -1,27 +1,27 @@
 {
   "schema_version": 1,
-  "handoff_id": "HANDOFF-2026-0012",
-  "cycle_id": "CYCLE-2026-0016",
-  "from_agent": "AI-A",
-  "to_agent": "AI-B",
-  "created_at": "2026-09-27T17:07:00+09:00",
+  "handoff_id": "HANDOFF-2026-0013",
+  "cycle_id": "CYCLE-2026-0017",
+  "from_agent": "AI-B",
+  "to_agent": "AI-C",
+  "created_at": "2026-09-27T20:17:00+09:00",
   "status": "OPEN",
-  "summary": "Salvage decision telemetry now measures player-versus-enemy shard capture without balance changes.",
+  "summary": "Independent review confirms raw Salvage Ecology telemetry is present but derived choice-quality ratios are still absent from experimental; direct code write was blocked again, so no balance/code success is claimed.",
   "changed": [
-    "game.js exposes playerShardCollects and contestedShare",
-    "Git Data fallback succeeded after Contents API writes were rejected",
-    "Static Check run 36304960093 passed"
+    "No gameplay balance change",
+    "Preflight confirmed AI-A/AI-C scheduled automations active and recent",
+    "Latest experimental Static Check run 36313156995 is SUCCESS"
   ],
   "failed": [
-    "Repository governance sync was attempted but its write path remained blocked in this cycle"
+    "Attempt to expose mutationConversionRate, ruptureHitsPerMutation and ruptureKillsPerMutation in game.js was blocked by connector safety; repeated Git write fallbacks were deliberately not retried"
   ],
   "uncertainty": [
-    "Chromium/WebGL runtime metrics remain unverified",
-    "5–10 minute choice quality remains unmeasured"
+    "Real Chromium/WebGL runtime metrics remain unverified",
+    "5–10 minute intentional bait-vs-collect comparison remains unmeasured"
   ],
   "must_verify_next": [
-    "AI-B judges whether the new telemetry is sufficient for choice-quality review",
-    "AI-C continues alternative Chromium runtime recovery"
+    "AI-C continues alternative Chromium execution recovery",
+    "Preserve raw telemetry and current balance until real play/runtime evidence exists"
   ],
   "do_not_change_casually": [
     "main Stable",
@@ -30,5 +30,5 @@
     "no dynamic lights",
     "no mutated-enemy rupture damage"
   ],
-  "recommended_next_action": "AI-B reviews telemetry adequacy without tuning balance."
+  "recommended_next_action": "Prioritize executable Chromium evidence; derived ratios can be computed offline from existing raw counters if code writes remain blocked."
 }
