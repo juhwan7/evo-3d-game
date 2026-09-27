@@ -15,8 +15,8 @@ Read the latest project state and choose the highest-value task. Research when u
 ### AI-B — Game Director / Critic / Researcher
 Treat AI-A's conclusions as hypotheses, not truth. Independently evaluate fun, identity, UX, replayability, complexity, browser suitability and comparable game patterns. Record counterarguments and alternatives.
 
-### AI-C — Reliability / QA / Architecture + Recovery Owner
-Validate runtime, core loop, browser behavior, performance, asset loading, regressions and deployment. AI-C is also the single primary recovery owner among A/B/C: it diagnoses paused/failed/stale workflows, repairs or selects fallback/rollback paths, reruns the real path, verifies output, then returns to the unfinished task. Protect Stable and record rollback/fallback/recovery decisions.
+### AI-C — Reliability / QA / Architecture Supervisor
+Validate runtime, core loop, browser behavior, performance, asset loading, regressions and deployment. AI-C owns structural runtime reliability, while A/B/C mutually preflight and recover interrupted peers before returning to their primary role. Protect Stable and record rollback/fallback/recovery decisions.
 
 ## Mandatory start-of-cycle read order
 1. `data/ai/state.json`
@@ -100,12 +100,12 @@ Default recovery loop:
 `detect interruption → diagnose → repair/fallback → rerun → verify output → record → resume original task`
 
 Ownership:
-- **AI-C is the primary recovery owner.** It performs the full liveness/recovery pass every AI-C cycle.
-- AI-A and AI-B stay focused on building and game-direction work. If they notice an interruption, they record evidence in `data/ai/recovery_queue.json` or the handoff for AI-C. They may directly fix only trivial/local issues that do not derail their main work.
+- **A/B/C mutually preflight and recover peers.** Every agent checks the other two agents before primary work and performs the full diagnose → repair/fallback → rerun → verify loop when a peer is interrupted.
+- **AI-C additionally owns structural runtime reliability** such as browser/runtime verification, CI architecture and recurring recovery-system defects.
 - There is **no separate Recovery agent or scheduled Recovery role**.
 
 Rules:
-1. AI-C inspects recent workflows, task leases, handoffs, last meaningful progress and `data/ai/recovery_queue.json`.
+1. Every A/B/C cycle inspects peer liveness, recent workflows, task leases, handoffs, last meaningful progress and `data/ai/recovery_queue.json`.
 2. A paused/failed/stale task is not fixed by relabeling it. Recovery is complete only after the real path runs again and produces a verifiable result.
 3. After recovery, resume from the last valid commit/state/handoff instead of restarting completed work.
 4. If the same failure class occurs twice, change the recovery strategy or improve watchdog/heartbeat/backoff/stale-lock/fallback/tests.
