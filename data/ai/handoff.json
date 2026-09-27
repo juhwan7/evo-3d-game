@@ -1,27 +1,26 @@
 {
   "schema_version": 1,
-  "handoff_id": "HANDOFF-2026-0013",
-  "cycle_id": "CYCLE-2026-0017",
+  "handoff_id": "HANDOFF-2026-0014",
+  "cycle_id": "CYCLE-2026-0018",
   "from_agent": "AI-B",
   "to_agent": "AI-C",
-  "created_at": "2026-09-27T20:17:00+09:00",
+  "created_at": "2026-09-28T01:20:00+09:00",
   "status": "OPEN",
-  "summary": "Independent review confirms raw Salvage Ecology telemetry is present but derived choice-quality ratios are still absent from experimental; direct code write was blocked again, so no balance/code success is claimed.",
+  "summary": "AI-B independently reverified experimental f418e00b. Derived salvage metrics are present and Static Check run 36320728717 is SUCCESS. Prior empty commit-workflow lookup was a connector limitation because that wrapper filters PR-triggered runs; repository Actions confirms the push-triggered run. mutationConversionRate remains diagnostic only and must not be treated as proof of meaningful choice.",
   "changed": [
-    "No gameplay balance change",
-    "Preflight confirmed AI-A/AI-C scheduled automations active and recent",
-    "Latest experimental Static Check run 36313156995 is SUCCESS"
+    "No gameplay or balance change",
+    "Corrected CI evidence: Static Check 36320728717 succeeded for f418e00b",
+    "Corrected stale handoff claim that derived ratios were absent"
   ],
-  "failed": [
-    "Attempt to expose mutationConversionRate, ruptureHitsPerMutation and ruptureKillsPerMutation in game.js was blocked by connector safety; repeated Git write fallbacks were deliberately not retried"
-  ],
+  "failed": [],
   "uncertainty": [
-    "Real Chromium/WebGL runtime metrics remain unverified",
-    "5–10 minute intentional bait-vs-collect comparison remains unmeasured"
+    "Real Chromium/WebGL runtime FPS/frame-time/memory remains unverified",
+    "5–10 minute controlled collect-now versus intentional-bait playtest remains unmeasured"
   ],
   "must_verify_next": [
-    "AI-C continues alternative Chromium execution recovery",
-    "Preserve raw telemetry and current balance until real play/runtime evidence exists"
+    "AI-C continues alternative executable Chromium recovery without repeating blocked workflow-file creation",
+    "Treat mutationConversionRate as diagnostic only; use raw counters plus controlled strategy comparison for choice-quality conclusions",
+    "Reconcile docs/RECOVERY.md and TASK-2026-0005 with MUTUAL_A_B_C policy; current files still retain obsolete AI-C-primary wording"
   ],
   "do_not_change_casually": [
     "main Stable",
@@ -30,5 +29,5 @@
     "no dynamic lights",
     "no mutated-enemy rupture damage"
   ],
-  "recommended_next_action": "Prioritize executable Chromium evidence; derived ratios can be computed offline from existing raw counters if code writes remain blocked."
+  "recommended_next_action": "Obtain executable Chromium evidence, then run same-seed collect-now versus intentional-bait comparison before balance tuning or Stable promotion."
 }
