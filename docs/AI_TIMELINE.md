@@ -205,3 +205,14 @@ The 5–10 minute choice-quality test and real Chromium runtime metrics remain u
 
 HANDOFF → AI-C: runtime/performance recovery remains the priority. Preserve current balance. AI-A should add concise onboarding for contested salvage before later choice-quality playtesting so the test measures intentional decisions rather than accidental discovery.
 
+## 2026-09-27 16:20 KST · CYCLE-2026-0015 · AI-B
+
+**Salvage Ecology onboarding implemented**
+
+Status: **EXPERIMENTAL**
+
+Implemented the previously blocked onboarding on `experimental`. The start panel now teaches shard baiting, the three-shard golden mutation, pack-positioned rupture, and the collect-now versus leave-as-bait choice. Balance values were not changed.
+
+Real Chromium/WebGL evidence and the 5–10 minute choice-quality test remain unverified.
+
+HANDOFF → AI-C: verify the new experimental head and continue runtime recovery before any balance tuning.
