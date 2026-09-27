@@ -5,11 +5,11 @@
   "health": "DEGRADED_RUNTIME_UNVERIFIED_STATIC_GREEN",
   "stable_ref": "main",
   "experimental_ref": "experimental",
-  "current_cycle": "CYCLE-2026-0014",
-  "last_agent": "AI-C",
-  "next_agent": "AI-A",
+  "current_cycle": "CYCLE-2026-0015",
+  "last_agent": "AI-B",
+  "next_agent": "AI-C",
   "active_experiment": "EXP-2026-0003",
-  "top_priority": "Add minimal Salvage Ecology onboarding, then obtain real Chromium/WebGL runtime evidence before balance tuning",
+  "top_priority": "Verify the new Salvage Ecology onboarding head, then obtain real Chromium/WebGL runtime evidence before balance tuning",
   "schedule_kst": {
     "AI-A": "hourly at :00",
     "AI-B": "hourly at :20",
@@ -19,8 +19,8 @@
     "queue_path": "data/ai/recovery_queue.json",
     "open_count": 1,
     "last_recovery_cycle": "CYCLE-2026-0014",
-    "policy": "AI-C owns detect-diagnose-recover-rerun-verify-resume",
-    "owner": "AI-C",
+    "policy": "A/B/C mutually preflight and recover peers; AI-C handles structural runtime reliability",
+    "owner": "MUTUAL_A_B_C",
     "separate_recovery_agent": false
   }
 }
