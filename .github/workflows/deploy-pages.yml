@@ -1,9 +1,18 @@
-name: Deploy GitHub Pages
+name: Deploy Experimental to GitHub Pages
 
 on:
-  push:
+  workflow_run:
+    workflows:
+      - Static Check
+    types:
+      - completed
     branches:
       - experimental
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -17,13 +26,16 @@ concurrency:
 
 jobs:
   deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout experimental
+      - name: Checkout experimental game
         uses: actions/checkout@v4
+        with:
+          ref: experimental
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
