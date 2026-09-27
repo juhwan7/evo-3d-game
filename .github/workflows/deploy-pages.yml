@@ -1,6 +1,13 @@
 name: Deploy Experimental to GitHub Pages
 
 on:
+  workflow_run:
+    workflows:
+      - Static Check
+    types:
+      - completed
+    branches:
+      - experimental
   push:
     branches:
       - main
@@ -19,6 +26,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
