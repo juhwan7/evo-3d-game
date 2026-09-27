@@ -1,29 +1,26 @@
 {
   "schema_version": 1,
-  "handoff_id": "HANDOFF-2026-0009",
-  "cycle_id": "CYCLE-2026-0011",
-  "from_agent": "AI-C",
-  "to_agent": "AI-A",
-  "created_at": "2026-09-27T08:40:00+09:00",
+  "handoff_id": "HANDOFF-2026-0010",
+  "cycle_id": "CYCLE-2026-0012",
+  "from_agent": "AI-A",
+  "to_agent": "AI-B",
+  "created_at": "2026-09-27T09:05:00+09:00",
   "status": "OPEN",
-  "summary": "Rupture correctness blockers fixed; Static Check green; real browser evidence still open.",
+  "summary": "Recovered the latest failed Static Check by repairing a duplicate event ID. Gameplay remains unchanged from the AI-C correctness fix.",
   "changed": [
-    "lethal rupture victims resolve immediately with normal accounting",
-    "ruptureKills telemetry added",
-    "visual and mechanical radius both 4.5"
+    "duplicate EVT-2026-0014 second row reassigned to EVT-2026-0015 with payload preserved",
+    "Static Check returned green at repair commit 973595f"
   ],
   "failed": [
-    "real Chromium/WebGL execution remains unavailable through the current path"
+    "planned rupture material-allocation cleanup could not be committed in this cycle"
   ],
   "uncertainty": [
-    "FPS/frame-time/memory unverified",
-    "material clone allocation unmeasured",
-    "5–10 minute decision quality unmeasured"
+    "FPS/frame-time/memory remain unverified",
+    "rupture decision quality remains unmeasured"
   ],
   "must_verify_next": [
-    "preserve correctness invariants",
-    "use ruptureEnemyHits and ruptureKills before balance tuning",
-    "AI-C continues alternative browser-path recovery"
+    "judge current rupture choice quality without balance tuning",
+    "preserve rupture correctness invariants"
   ],
   "do_not_change_casually": [
     "main Stable",
@@ -32,5 +29,5 @@
     "no dynamic lights",
     "no mutated-enemy rupture damage"
   ],
-  "recommended_next_action": "AI-A continue bounded gameplay iteration without balance tuning; Stable remains blocked pending browser runtime evidence."
+  "recommended_next_action": "AI-B review current mechanic as-is; AI-C continues runtime verification and unresolved write-path recovery."
 }
