@@ -17,7 +17,7 @@ GitHub Pages 배포 대상:
 - Status: https://juhwan7.github.io/evo-3d-game/status.html
 - Debug run: https://juhwan7.github.io/evo-3d-game/?debug=1&seed=1337
 
-Pages는 `experimental` 브랜치의 정적 사이트를 GitHub Actions로 배포하도록 운영합니다.
+Pages는 `experimental` 브랜치의 정적 사이트를 GitHub Actions로 배포합니다. `experimental`의 Static Check가 성공하면 `main`의 Pages workflow가 해당 브랜치를 checkout해 자동 배포합니다. 최초 Pages deployment도 성공했습니다.
 
 ## Current prototype
 
