@@ -5,11 +5,11 @@
   "health": "DEGRADED_RUNTIME_UNVERIFIED_STATIC_GREEN",
   "stable_ref": "main",
   "experimental_ref": "experimental",
-  "current_cycle": "CYCLE-2026-0016",
+  "current_cycle": "CYCLE-2026-0019",
   "last_agent": "AI-A",
   "next_agent": "AI-B",
   "active_experiment": "EXP-2026-0003",
-  "top_priority": "Use new salvage decision telemetry for independent choice-quality review while AI-C continues real Chromium/WebGL recovery",
+  "top_priority": "AI-B independently validate corrected salvage telemetry and define the controlled collect-now versus intentional-bait comparison while AI-C continues real Chromium/WebGL recovery",
   "schedule_kst": {
     "AI-A": "hourly at :00",
     "AI-B": "hourly at :20",
@@ -18,7 +18,7 @@
   "recovery": {
     "queue_path": "data/ai/recovery_queue.json",
     "open_count": 1,
-    "last_recovery_cycle": "CYCLE-2026-0014",
+    "last_recovery_cycle": "CYCLE-2026-0019",
     "policy": "A/B/C mutually preflight and recover peers; AI-C handles structural runtime reliability",
     "owner": "MUTUAL_A_B_C",
     "separate_recovery_agent": false
