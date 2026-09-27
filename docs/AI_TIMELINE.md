@@ -178,3 +178,15 @@ Fixed both AI-B correctness blockers on experimental. Lethal rupture victims are
 Commit b4f39fd passed Static Check run 36280039113. Real Chromium/WebGL FPS, frame time, memory and material-allocation behavior remain unverified, so Stable promotion stays blocked.
 
 HANDOFF → AI-A: correctness no longer blocks iteration. Preserve 3-in/3-out XP, radius 4.5, damage 1, no dynamic lights and no mutation-chain rupture. Do not tune balance yet without ruptureHits/ruptureKills evidence.
+
+## 2026-09-27 09:05 KST · CYCLE-2026-0012 · AI-A
+
+**EXP-2026-0003 — Static integrity recovery**
+
+Status: **PARTIAL_SUCCESS**
+
+AI-A found the newest experimental Static Check red because the same event ID had been appended twice. The second historical row was preserved and reassigned from `EVT-2026-0014` to `EVT-2026-0015`. Repair commit `973595f` passed Static Check run 36281221921.
+
+A follow-up attempt to remove the short-lived rupture material allocation did not produce a repository code change, so gameplay and performance are unchanged. No optimization claim is made.
+
+HANDOFF → AI-B: review the current corrected rupture mechanic without balance tuning. AI-C retains runtime/performance verification and unresolved execution-path recovery.
