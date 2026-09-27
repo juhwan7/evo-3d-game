@@ -8,7 +8,18 @@ page.on('pageerror',e=>errors.push('pageerror: '+e.message));
 page.on('console',m=>{if(m.type()==='error') errors.push('console: '+m.text())});
 await page.goto(url,{waitUntil:'networkidle'});
 await page.locator('#start').click();
-await page.waitForTimeout(3500);
+const samples=[];
+for(let i=0;i<5;i++){
+ await page.waitForTimeout(2000);
+ samples.push(await page.evaluate(()=>({
+  fps:Number(document.querySelector('#fps')?.textContent||0),
+  time:window.__VOID_HARVEST_DEBUG__?.snapshot?.time||0,
+  calls:window.__VOID_HARVEST_DEBUG__?.snapshot?.renderer?.calls||0,
+  triangles:window.__VOID_HARVEST_DEBUG__?.snapshot?.renderer?.triangles||0,
+  geometries:window.__VOID_HARVEST_DEBUG__?.snapshot?.renderer?.geometries||0,
+  textures:window.__VOID_HARVEST_DEBUG__?.snapshot?.renderer?.textures||0
+ })));
+}
 const result=await page.evaluate(()=>({
  fps:document.querySelector('#fps')?.textContent,
  hp:document.querySelector('#hp')?.textContent,
@@ -16,7 +27,7 @@ const result=await page.evaluate(()=>({
  startHidden:document.querySelector('#start-panel')?.classList.contains('hidden'),
  debug:window.__VOID_HARVEST_DEBUG__?.snapshot
 }));
-console.log(JSON.stringify(result));
+console.log(JSON.stringify({result,samples}));
 if(errors.length) throw new Error(errors.join('\n'));
 if(!result.startHidden) throw new Error('game did not leave start panel');
 if(!/^\d+$/.test(result.fps||'')) throw new Error('FPS HUD did not become numeric');
@@ -24,4 +35,7 @@ if(Number(result.hp)<=0) throw new Error('player died during smoke window');
 if(!result.canvas.w||!result.canvas.h) throw new Error('canvas has zero drawing-buffer size');
 if(!result.debug) throw new Error('deterministic debug snapshot unavailable');
 if(result.debug.renderer.calls<=0) throw new Error('renderer reported zero draw calls');
+if(samples.some(s=>!Number.isFinite(s.fps)||!Number.isFinite(s.calls)||!Number.isFinite(s.triangles))) throw new Error('runtime sample contains non-finite metrics');
+if(samples.at(-1).time<=samples[0].time) throw new Error('simulation time did not advance during sustained smoke');
+if(samples.some(s=>s.calls<=0)) throw new Error('renderer reported zero draw calls in sustained smoke');
 await browser.close();
