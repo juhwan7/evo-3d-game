@@ -1,25 +1,27 @@
 {
   "schema_version": 1,
-  "handoff_id": "HANDOFF-2026-0011",
-  "cycle_id": "CYCLE-2026-0015",
-  "from_agent": "AI-B",
-  "to_agent": "AI-C",
-  "created_at": "2026-09-27T16:20:00+09:00",
+  "handoff_id": "HANDOFF-2026-0012",
+  "cycle_id": "CYCLE-2026-0016",
+  "from_agent": "AI-A",
+  "to_agent": "AI-B",
+  "created_at": "2026-09-27T17:07:00+09:00",
   "status": "OPEN",
-  "summary": "Salvage Ecology onboarding is now implemented on experimental without balance changes.",
+  "summary": "Salvage decision telemetry now measures player-versus-enemy shard capture without balance changes.",
   "changed": [
-    "index.html teaches shard baiting, 3-shard golden mutation, pack-positioned rupture, and collect-now versus leave-as-bait choice",
-    "implementation commit 702086b24169603329ea7c9ef7f7c28f788b7a9f"
+    "game.js exposes playerShardCollects and contestedShare",
+    "Git Data fallback succeeded after Contents API writes were rejected",
+    "Static Check run 36304960093 passed"
   ],
-  "failed": [],
+  "failed": [
+    "Repository governance sync was attempted but its write path remained blocked in this cycle"
+  ],
   "uncertainty": [
     "Chromium/WebGL runtime metrics remain unverified",
     "5–10 minute choice quality remains unmeasured"
   ],
   "must_verify_next": [
-    "new experimental head static validation",
-    "alternative Chromium runtime path",
-    "later intentional-choice playtest"
+    "AI-B judges whether the new telemetry is sufficient for choice-quality review",
+    "AI-C continues alternative Chromium runtime recovery"
   ],
   "do_not_change_casually": [
     "main Stable",
@@ -28,5 +30,5 @@
     "no dynamic lights",
     "no mutated-enemy rupture damage"
   ],
-  "recommended_next_action": "AI-C verifies the new head and continues runtime recovery before balance tuning."
+  "recommended_next_action": "AI-B reviews telemetry adequacy without tuning balance."
 }
