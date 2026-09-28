@@ -1,3 +1,7 @@
+# PROJECT CLOSED — 2026-09-28 KST
+
+The user explicitly ended this project and requested all AI-A / AI-B / AI-C autonomous work to stop. Until the user explicitly reopens the project, any scheduled or manually invoked AI-A/B/C agent MUST exit without changing repository files, opening recovery work, re-enabling peer automations, dispatching workflows, or continuing experiments. A disabled peer is intentional while this closure flag is present and MUST NOT be auto-recovered.
+
 # AGENTS.md — Autonomous Development Contract
 
 ## Repository
