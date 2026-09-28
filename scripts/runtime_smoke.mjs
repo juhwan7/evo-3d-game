@@ -34,6 +34,13 @@ if(!/^\d+$/.test(result.fps||'')) throw new Error('FPS HUD did not become numeri
 if(Number(result.hp)<=0) throw new Error('player died during smoke window');
 if(!result.canvas.w||!result.canvas.h) throw new Error('canvas has zero drawing-buffer size');
 if(!result.debug) throw new Error('deterministic debug snapshot unavailable');
+const ecology=result.debug.ecology;
+if(!ecology) throw new Error('ecology debug snapshot unavailable');
+for(const key of ['playerShardCollects','enemyShardConsumes','mutations','partialMutationSalvage','completedMutationShardShare','mutationRuptures','ruptureEnemyHits','ruptureKills']){
+ if(!Number.isFinite(ecology[key])) throw new Error('ecology telemetry '+key+' is missing or non-finite');
+}
+if(ecology.partialMutationSalvage<0) throw new Error('partialMutationSalvage must be non-negative');
+if(ecology.completedMutationShardShare<0||ecology.completedMutationShardShare>1) throw new Error('completedMutationShardShare must be within [0,1]');
 if(result.debug.renderer.calls<=0) throw new Error('renderer reported zero draw calls');
 if(samples.some(s=>!Number.isFinite(s.fps)||!Number.isFinite(s.calls)||!Number.isFinite(s.triangles))) throw new Error('runtime sample contains non-finite metrics');
 if(samples.at(-1).time<=samples[0].time) throw new Error('simulation time did not advance during sustained smoke');
