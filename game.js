@@ -5,6 +5,11 @@ const debugParams=new URLSearchParams(location.search);
 const debugMode=debugParams.get('debug')==='1';
 const debugStrategy=debugMode&&['collect','bait'].includes(debugParams.get('strategy'))?debugParams.get('strategy'):null;
 let rngState=(Number(debugParams.get('seed'))||1337)>>>0;
+const benchmarkMode=Boolean(debugStrategy);
+const BENCHMARK_STEP=1/60;
+const BENCHMARK_MAX_TICKS=72000;
+const benchmarkTargetTicks=benchmarkMode?Math.min(BENCHMARK_MAX_TICKS,Math.max(1,Math.floor(Number(debugParams.get('ticks'))||36000))):0;
+let benchmarkTicks=0,benchmarkAccumulator=0,benchmarkTerminalReason=null,benchmarkTerminalTick=null;
 function seededRandom(){rngState=(rngState+0x6D2B79F5)>>>0;let t=rngState;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;}
 function random(){return debugMode?seededRandom():Math.random();}
 const ui={
@@ -101,7 +106,7 @@ const state={
 };
 
 function reset(){
- if(debugMode){rngState=(Number(debugParams.get('seed'))||1337)>>>0;Object.assign(debugMetrics,{frames:0,elapsed:0,lastFps:0,maxEnemies:0,maxBullets:0,maxShards:0,playerShardCollects:0,enemyShardConsumes:0,mutations:0,mutationRuptures:0,ruptureEnemyHits:0,ruptureKills:0,strategyFrames:0,baitWithholdFrames:0,baitPositionFrames:0});}
+ if(debugMode){rngState=(Number(debugParams.get('seed'))||1337)>>>0;benchmarkTicks=0;benchmarkAccumulator=0;benchmarkTerminalReason=null;benchmarkTerminalTick=null;Object.assign(debugMetrics,{frames:0,elapsed:0,lastFps:0,maxEnemies:0,maxBullets:0,maxShards:0,playerShardCollects:0,enemyShardConsumes:0,mutations:0,mutationRuptures:0,ruptureEnemyHits:0,ruptureKills:0,strategyFrames:0,baitWithholdFrames:0,baitPositionFrames:0});}
  enemies.forEach(x=>scene.remove(x.mesh));bullets.forEach(x=>scene.remove(x.mesh));shards.forEach(x=>scene.remove(x.mesh));ruptures.forEach(x=>scene.remove(x.mesh));
  enemies=[];bullets=[];shards=[];ruptures=[];Object.assign(state,{running:true,paused:false,gameOver:false,time:0,hp:100,maxHp:100,level:1,xp:0,nextXp:7,score:0,speed:8.4,fireRate:.48,fireTimer:0,damage:1,bulletSpeed:24,magnet:2.2,spawnTimer:0,spawnEvery:1.05,maxEnemies:58,kills:0,regen:0,pierce:0});
  player.position.set(0,0,0);ui.startPanel.classList.add('hidden');ui.gameoverPanel.classList.add('hidden');ui.upgradePanel.classList.add('hidden');ui.pause.classList.add('hidden');clock.getDelta();updateHud();
@@ -209,6 +214,7 @@ function hurt(amount){
 }
 
 function endGame(){
+ if(benchmarkMode&&benchmarkTerminalReason===null){benchmarkTerminalReason='death';benchmarkTerminalTick=benchmarkTicks;}
  state.gameOver=true;state.running=false;state.paused=false;
  ui.summary.textContent=`${formatTime(state.time)} 생존 · 레벨 ${state.level} · 파편 ${state.score} · 처치 ${state.kills}`;
  ui.gameoverPanel.classList.remove('hidden');updateHud();
@@ -295,9 +301,21 @@ function updateHud(){
 let fpsFrames=0,fpsTime=0;
 function animate(){
  requestAnimationFrame(animate);
- let dt=Math.min(.05,clock.getDelta());
- if(state.running&&!state.paused&&!state.gameOver){update(dt);updateHud();}
- fpsFrames++;fpsTime+=dt;if(debugMode){debugMetrics.frames++;debugMetrics.elapsed+=dt;}if(fpsTime>.5){const measured=Math.round(fpsFrames/fpsTime);ui.fps.textContent=measured;if(debugMode)debugMetrics.lastFps=measured;fpsFrames=0;fpsTime=0;}
+ const wallDt=Math.min(.05,clock.getDelta());
+ if(state.running&&!state.paused&&!state.gameOver){
+  if(benchmarkMode){
+   benchmarkAccumulator+=wallDt;
+   let steps=0;
+   while(benchmarkAccumulator>=BENCHMARK_STEP&&steps<8&&state.running&&!state.gameOver&&benchmarkTicks<benchmarkTargetTicks){
+    benchmarkTicks++;update(BENCHMARK_STEP);benchmarkAccumulator-=BENCHMARK_STEP;steps++;
+   }
+   if(benchmarkTicks>=benchmarkTargetTicks&&benchmarkTerminalReason===null){
+    benchmarkTerminalReason='horizon';benchmarkTerminalTick=benchmarkTicks;state.running=false;state.paused=false;
+   }
+  }else update(wallDt);
+  updateHud();
+ }
+ fpsFrames++;fpsTime+=wallDt;if(debugMode){debugMetrics.frames++;debugMetrics.elapsed+=wallDt;}if(fpsTime>.5){const measured=Math.round(fpsFrames/fpsTime);ui.fps.textContent=measured;if(debugMode)debugMetrics.lastFps=measured;fpsFrames=0;fpsTime=0;}
  renderer.render(scene,camera);
 }
 animate();
@@ -315,4 +333,4 @@ document.querySelector('#start').addEventListener('click',reset);
 document.querySelector('#restart').addEventListener('click',reset);
 camera.position.set(0,15.5,18);camera.lookAt(0,0,-2);
 
-if(debugMode){window.__VOID_HARVEST_DEBUG__={get snapshot(){return {strategy:debugStrategy,seed:(Number(debugParams.get('seed'))||1337)>>>0,rngState,time:state.time,hp:state.hp,level:state.level,score:state.score,enemies:enemies.length,bullets:bullets.length,shards:shards.length,ecology:{mutatedEnemies:enemies.filter(e=>e.mutated).length,carriedSalvage:enemies.reduce((sum,e)=>sum+e.salvage,0),partialMutationSalvage:enemies.reduce((sum,e)=>sum+(e.mutated?0:e.salvage),0),playerShardCollects:debugMetrics.playerShardCollects,enemyShardConsumes:debugMetrics.enemyShardConsumes,contestedShare:Number((debugMetrics.enemyShardConsumes/Math.max(1,debugMetrics.enemyShardConsumes+debugMetrics.playerShardCollects)).toFixed(3)),mutations:debugMetrics.mutations,completedMutationShardShare:Number(((debugMetrics.mutations*ECOLOGY.mutationThreshold)/Math.max(1,debugMetrics.enemyShardConsumes)).toFixed(3)),mutationRuptures:debugMetrics.mutationRuptures,ruptureEnemyHits:debugMetrics.ruptureEnemyHits,ruptureHitsPerMutation:Number((debugMetrics.ruptureEnemyHits/Math.max(1,debugMetrics.mutationRuptures)).toFixed(3)),ruptureKills:debugMetrics.ruptureKills,ruptureKillsPerMutation:Number((debugMetrics.ruptureKills/Math.max(1,debugMetrics.mutationRuptures)).toFixed(3)),activeRuptures:ruptures.length,maxLooseShards:ECOLOGY.maxLooseShards,scanHz:1/ECOLOGY.scanInterval,ruptureRadius:ECOLOGY.ruptureRadius,ruptureDamage:ECOLOGY.ruptureDamage},renderer:{calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures},metrics:{...debugMetrics}}}};ui.message.textContent='DEBUG MODE · seed '+((Number(debugParams.get('seed'))||1337)>>>0)+(debugStrategy?' · strategy '+debugStrategy:'')+' · SALVAGE ECOLOGY';}
+if(debugMode){window.__VOID_HARVEST_DEBUG__={get snapshot(){return {strategy:debugStrategy,seed:(Number(debugParams.get('seed'))||1337)>>>0,rngState,benchmark:benchmarkMode?{fixedStep:BENCHMARK_STEP,targetTicks:benchmarkTargetTicks,ticks:benchmarkTicks,complete:benchmarkTerminalReason!==null,terminalReason:benchmarkTerminalReason,terminalTick:benchmarkTerminalTick}:null,time:state.time,hp:state.hp,level:state.level,score:state.score,enemies:enemies.length,bullets:bullets.length,shards:shards.length,ecology:{mutatedEnemies:enemies.filter(e=>e.mutated).length,carriedSalvage:enemies.reduce((sum,e)=>sum+e.salvage,0),partialMutationSalvage:enemies.reduce((sum,e)=>sum+(e.mutated?0:e.salvage),0),playerShardCollects:debugMetrics.playerShardCollects,enemyShardConsumes:debugMetrics.enemyShardConsumes,contestedShare:Number((debugMetrics.enemyShardConsumes/Math.max(1,debugMetrics.enemyShardConsumes+debugMetrics.playerShardCollects)).toFixed(3)),mutations:debugMetrics.mutations,completedMutationShardShare:Number(((debugMetrics.mutations*ECOLOGY.mutationThreshold)/Math.max(1,debugMetrics.enemyShardConsumes)).toFixed(3)),mutationRuptures:debugMetrics.mutationRuptures,ruptureEnemyHits:debugMetrics.ruptureEnemyHits,ruptureHitsPerMutation:Number((debugMetrics.ruptureEnemyHits/Math.max(1,debugMetrics.mutationRuptures)).toFixed(3)),ruptureKills:debugMetrics.ruptureKills,ruptureKillsPerMutation:Number((debugMetrics.ruptureKills/Math.max(1,debugMetrics.mutationRuptures)).toFixed(3)),activeRuptures:ruptures.length,maxLooseShards:ECOLOGY.maxLooseShards,scanHz:1/ECOLOGY.scanInterval,ruptureRadius:ECOLOGY.ruptureRadius,ruptureDamage:ECOLOGY.ruptureDamage},renderer:{calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures},metrics:{...debugMetrics}}}};ui.message.textContent='DEBUG MODE · seed '+((Number(debugParams.get('seed'))||1337)>>>0)+(debugStrategy?' · strategy '+debugStrategy:'')+' · SALVAGE ECOLOGY';}
