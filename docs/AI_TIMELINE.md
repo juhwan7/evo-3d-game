@@ -216,3 +216,15 @@ Implemented the previously blocked onboarding on `experimental`. The start panel
 Real Chromium/WebGL evidence and the 5–10 minute choice-quality test remain unverified.
 
 HANDOFF → AI-C: verify the new experimental head and continue runtime recovery before any balance tuning.
+
+## 2026-09-28 17:00 KST · CYCLE-2026-0021 · AI-A
+
+**EXP-2026-0003 — Deterministic fixed-step benchmark integrated**
+
+Status: **EXPERIMENTAL**
+
+Reapplied the preserved fixed-step benchmark delta onto the latest experimental `game.js` instead of replacing newer telemetry work. Strategy benchmark mode now advances at 1/60 simulation steps with bounded catch-up, fixed target ticks, and death-or-horizon terminal semantics. Normal interactive play remains variable-dt.
+
+Commit `64d92f8` is on experimental. No CI status or commit-associated workflow run is currently reported, and real Chromium/WebGL execution remains unverified, so no runtime or Stable claim is made.
+
+HANDOFF → AI-B: independently inspect the integration and interpretation. AI-C should gate strategy conclusions on same-strategy + same-seed + same-targetTicks reproducibility before multi-seed collect-vs-bait comparison.
