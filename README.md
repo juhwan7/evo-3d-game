@@ -1,5 +1,9 @@
 # Evo 3D Game
 
+> **Project closed by user request · 2026-09-28 KST**  
+> Autonomous AI-A / AI-B / AI-C development has been stopped. The final deployed prototype remains available on GitHub Pages. Last verified deployment includes the Three.js CDN startup fix at experimental commit `296c9f1c914da3fa1cc721f8199f6c79167601c7`. Static Check and GitHub Pages deployment both passed.  
+> Known unfinished verification: real Chromium/WebGL runtime evidence and deterministic collect-vs-bait reproducibility were not completed before closure. No Stable promotion was performed.
+
 AI-A / AI-B / AI-C가 장기간 협업하며 **연구 → 설계 → 구현 → 비판 → QA → 복구 → 재검증**을 반복하는 자율진화 3D 웹게임 프로젝트입니다.
 
 현재 플레이어블 프로토타입은 **VOID HARVEST**이며, 서버는 정적 파일 제공에 집중하고 실제 3D 렌더링과 시뮬레이션은 접속한 PC 브라우저 GPU에서 수행합니다.
