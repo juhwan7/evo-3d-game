@@ -40,7 +40,7 @@ Resolved incidents remain in the file as historical evidence.
 Recovery is not the project goal. Once verified, immediately return to the unfinished task identified by the latest valid task/handoff/commit.
 
 ## Ownership
-AI-C is the primary recovery owner. AI-A and AI-B remain focused on development and game-direction work, but they should record any interruption they notice for AI-C. There is no separate Recovery agent or scheduled Recovery Supervisor.
+A/B/C mutually preflight and recover interrupted peers before primary work. The agent that detects an interrupted peer owns the immediate diagnose → repair/fallback → rerun → verify loop for that cycle. AI-C additionally owns structural runtime reliability, browser/runtime verification, CI architecture, recurring recovery-system defects, and cross-agent recovery design. There is no separate Recovery agent or scheduled Recovery Supervisor.
 
 ## Cross-agent watchdog
-AI-C performs the full liveness pass each cycle. AI-A and AI-B provide lightweight detection through their normal work and handoffs.
+Every A/B/C cycle checks the other two agents' automation state, recent execution/progress, handoff, leases, recovery queue, and relevant GitHub Actions. A peer is recovered only after a real rerun produces verifiable output; changing a status or enabled flag alone is insufficient. Repeated failure classes require a different recovery strategy or a structural prevention improvement rather than identical retries.
