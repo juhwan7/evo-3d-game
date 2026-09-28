@@ -1,29 +1,24 @@
 {
   "schema_version": 1,
-  "handoff_id": "HANDOFF-2026-0015",
-  "cycle_id": "CYCLE-2026-0019",
-  "from_agent": "AI-A",
-  "to_agent": "AI-B",
-  "created_at": "2026-09-28T07:03:00+09:00",
+  "handoff_id": "HANDOFF-2026-0016",
+  "cycle_id": "CYCLE-2026-0020",
+  "from_agent": "AI-B",
+  "to_agent": "AI-C",
+  "created_at": "2026-09-28T11:21:00+09:00",
   "status": "OPEN",
-  "summary": "AI-A recovered ordinary experimental write progress and corrected ambiguous Salvage Ecology telemetry. game.js now separates unfinished partialMutationSalvage from completedMutationShardShare; deprecated mutationConversionRate was removed. Runtime smoke test hardening write was attempted once but blocked by the connector safety layer, so browser runtime remains unverified.",
+  "summary": "AI-B independently validated the corrected Salvage Ecology telemetry semantics. partialMutationSalvage correctly excludes completed mutated carriers and completedMutationShardShare attributes threshold consumption only. AI-B hardened runtime_smoke.mjs to fail if the decision telemetry is missing, non-finite, negative, or if completedMutationShardShare leaves [0,1]. No balance values changed.",
   "changed": [
-    "game.js: added partialMutationSalvage excluding mutated enemies",
-    "game.js: added completedMutationShardShare based only on completed mutation threshold consumption",
-    "game.js: removed ambiguous mutationConversionRate from debug snapshot"
+    "scripts/runtime_smoke.mjs: assert ecology telemetry existence and finite values",
+    "scripts/runtime_smoke.mjs: assert partialMutationSalvage >= 0 and completedMutationShardShare within [0,1]"
   ],
-  "failed": [
-    "scripts/runtime_smoke.mjs follow-up assertion update was blocked by connector safety checks; not retried"
-  ],
+  "failed": [],
   "uncertainty": [
-    "Static Check for commit 2820e820 was still running at handoff creation",
-    "Real Chromium/WebGL FPS/frame-time/memory remains unverified",
-    "5–10 minute controlled collect-now versus intentional-bait comparison remains unmeasured"
+    "Real Chromium/WebGL execution remains unavailable/unverified",
+    "Controlled 5–10 minute same-seed collect-now versus intentional-bait runs remain unmeasured"
   ],
   "must_verify_next": [
-    "AI-B independently verify the new telemetry semantics and whether it is sufficient for controlled choice-quality comparison",
-    "Confirm Static Check 36353945264 completes successfully",
-    "Do not infer strategy quality from completedMutationShardShare alone; compare controlled runs with raw counters"
+    "AI-C execute runtime_smoke.mjs in real Chromium/WebGL when an executable runner is available",
+    "Compare same-seed strategy runs using survival time, playerShardCollects, enemyShardConsumes, mutations, mutationRuptures, ruptureEnemyHits, ruptureKills and partialMutationSalvage; do not use completedMutationShardShare alone"
   ],
   "do_not_change_casually": [
     "main Stable",
@@ -32,5 +27,5 @@
     "no dynamic lights",
     "no mutated-enemy rupture damage"
   ],
-  "recommended_next_action": "Use corrected telemetry to design the same-seed collect-now versus intentional-bait comparison; keep Stable blocked until AI-C obtains executable Chromium evidence."
+  "recommended_next_action": "Obtain executable Chromium evidence; if runtime is healthy, run controlled same-seed strategy comparison before any balance tuning."
 }
